@@ -44,8 +44,8 @@ def verify_access_token(token:str) -> str | None:
     try:
         payload = jwt.decode(
             token,
-            settings.secret_key.get_secret_value(),
-            algorithms=[settings.algorithm],
+            settings.SECRET_KEY.get_secret_value(),
+            algorithms=[settings.ALGORITHM],
             options= {"require": ["exp", "sub"]},           #This tells jwt.decode() to require that the token contains both exp (expiration time) and sub (subject/user identifier) claims.
         )
 
@@ -64,10 +64,10 @@ def verify_access_token(token:str) -> str | None:
 async def get_current_user(                             #for authorization  
         token: Annotated[str, Depends(oauth2_scheme)],
         db: Annotated[AsyncSession, Depends(get_db)]
-) -> models.User:
+) -> models.Employee:
     
-    user_id = verify_access_token(token=token)
-    if user_id is None:
+    employee_id = verify_access_token(token=token)
+    if employee_id is None:
         raise HTTPException(
             status_code= status.HTTP_401_UNAUTHORIZED,
             detail= "invalid or expired token",
@@ -75,7 +75,7 @@ async def get_current_user(                             #for authorization
         )
     
     try:
-        user_id_int = int(user_id)
+        employee_id_int = int(employee_id)
     except (TypeError, ValueError):
         raise HTTPException(
             status_code= status.HTTP_401_UNAUTHORIZED,
@@ -83,16 +83,16 @@ async def get_current_user(                             #for authorization
             headers= {"WWW-Authenticate": "Bearer"}     
         )
     
-    result = db.execute(select(models.User).where(models.User,id == user_id_int))
-    user = result.scalars().first()
-    if not user:
+    result = await db.execute(select(models.Employee).where(models.Employee.id == employee_id_int))
+    employee = result.scalars().first()
+    if not employee:
         raise HTTPException(
             status_code= status.HTTP_401_UNAUTHORIZED,
-            detail= "User not found",
+            detail= "Employee not found",
             headers= {"WWW-Authenticate": "Bearer"}
         )
     
-    return user
+    return employee
 
 
 
