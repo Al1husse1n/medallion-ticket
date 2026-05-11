@@ -4,7 +4,7 @@ from decimal import Decimal
 from datetime import UTC, datetime
 from enum import Enum
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, UniqueConstraint, Numeric, Float, Enum as SQLAlchemyEnum
+from sqlalchemy import DateTime, ForeignKey, Integer, String, UniqueConstraint, Numeric, Boolean, Enum as SQLAlchemyEnum
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
 
@@ -53,7 +53,11 @@ class Patron(Base):
         DateTime(timezone=True),
         server_default=func.now()
     )
-
+    is_deleted: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False,
+        nullable=False
+    )
     tickets: Mapped[list["Ticket"]] = relationship(back_populates="buyer")
 
 class Production(Base):
@@ -76,7 +80,8 @@ class Performance(Base):
     production_id:Mapped[int] = mapped_column(
         ForeignKey("productions.id"),
         nullable=False,
-        index=True
+        index=True,
+        ondelete="CASCADE"
     )
 
     production: Mapped[Production] = relationship(back_populates="performances") 
@@ -115,20 +120,24 @@ class Ticket(Base):
     patron_id: Mapped[int] = mapped_column(
         ForeignKey("patrons.id"),
         nullable=False,
-        index=True
+        index=True,
+        ondelete="CASCADE"
     )
     performance_id: Mapped[int] = mapped_column(
         ForeignKey("performances.id"),
         nullable=False,
-        index=True
+        index=True,
+        ondelete="CASCADE"
     )
     seat_id: Mapped[int] = mapped_column(           #means cancelled tickets cant be bought again unless deleted first from the table
         ForeignKey("seats.id"),
-        nullable=False
+        nullable=False,
+        ondelete="CASCADE"
     )
     clerk_id: Mapped[int] = mapped_column(
         ForeignKey("employees.id"),
-        nullable=False
+        nullable=False,
+        ondelete="CASCADE"
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
