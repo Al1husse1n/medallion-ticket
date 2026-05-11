@@ -96,4 +96,4 @@ async def get_current_user(                             #for authorization
 
 
 
-CurrentUser = Annotated[models.User, Depends(get_current_user)] 
+CurrentEmployee = Annotated[models.Employee, Depends(get_current_user)] 
