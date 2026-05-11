@@ -23,9 +23,26 @@ class EmployeeRegisterResponse(EmployeeBase):
     id: int 
 
 class EmployeeResponse(EmployeeRegisterResponse):
-    tickets_sold: list[TicketResponse] = None
+    tickets_sold: list[TicketResponse] = []
 
 
+class PatronBase(BaseModel):
+    id: int
+    first_name: str = Field(min_length=1, max_length=50)
+    last_name: str = Field(min_length=1, max_length=50)
+    phone: str = Field(min_length=1, max_length=100)
+    address: str = Field(min_length=1, max_length=100)
+    email: EmailStr = Field(max_length=100)
+
+class PatronCreate(PatronBase):
+    pass
+
+class PatronCreateResponse(PatronBase):
+    created_at: datetime
+
+class PatronResponse(PatronCreateResponse):
+    is_deleted: bool
+    tickets: list[TicketResponse] = []
 
 class TicketBase(BaseModel):
     pass
