@@ -56,7 +56,7 @@ class Patron(Base):
     is_deleted: Mapped[bool] = mapped_column(
         Boolean,
         default=False,
-        nullable=False
+        nullable=False  
     )
     tickets: Mapped[list["Ticket"]] = relationship(back_populates="buyer")
 
@@ -78,10 +78,9 @@ class Performance(Base):
     )
 
     production_id:Mapped[int] = mapped_column(
-        ForeignKey("productions.id"),
+        ForeignKey("productions.id", ondelete="CASCADE"),
         nullable=False,
-        index=True,
-        ondelete="CASCADE"
+        index=True
     )
 
     production: Mapped[Production] = relationship(back_populates="performances") 
@@ -102,7 +101,7 @@ class Seat(Base):       #hold seat until customer pays
         UniqueConstraint(
             "seat_row", "seat_number",
             name="uq_seatrow_seatnumber"
-        )
+        ),
     )
 
     ticket: Mapped[Optional["Ticket"]] = relationship(back_populates="seat", uselist=False)       #uselist for one to one r/ship,  
@@ -118,26 +117,22 @@ class Ticket(Base):
         default= TicketStatus.SOLD
     )
     patron_id: Mapped[int] = mapped_column(
-        ForeignKey("patrons.id"),
+        ForeignKey("patrons.id", ondelete="CASCADE"),
         nullable=False,
-        index=True,
-        ondelete="CASCADE"
+        index=True
     )
     performance_id: Mapped[int] = mapped_column(
-        ForeignKey("performances.id"),
+        ForeignKey("performances.id", ondelete="CASCADE"),
         nullable=False,
-        index=True,
-        ondelete="CASCADE"
+        index=True
     )
     seat_id: Mapped[int] = mapped_column(           #means cancelled tickets cant be bought again unless deleted first from the table
-        ForeignKey("seats.id"),
-        nullable=False,
-        ondelete="CASCADE"
+        ForeignKey("seats.id", ondelete="CASCADE"),
+        nullable=False
     )
     clerk_id: Mapped[int] = mapped_column(
-        ForeignKey("employees.id"),
-        nullable=False,
-        ondelete="CASCADE"
+        ForeignKey("employees.id", ondelete="CASCADE"),
+        nullable=False
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -153,5 +148,5 @@ class Ticket(Base):
         UniqueConstraint(
             "performance_id", "seat_id",
             name="uq_performance_seat"          #prevents double booking    
-        )
+        ),
     )
