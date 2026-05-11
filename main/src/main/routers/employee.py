@@ -6,7 +6,7 @@ from sqlalchemy.orm import selectinload
 
 import models
 from database import get_db
-from schema import EmployeeCreate, EmployeeResponse
+from schema import EmployeeCreate, EmployeeResponse, EmployeeRegisterResponse, Token
 from datetime import timedelta
 from fastapi.security import OAuth2PasswordRequestForm
 from auth import(
@@ -19,9 +19,39 @@ from config import settings
 
 router = APIRouter()
 
+
+@router.post("/token", response_model=Token)
+async def login_for_access_token(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
+    db: Annotated[AsyncSession, Depends(get_db)]
+):
+    result = await db.execute(
+        select(models.Employee).where(
+            func.lower(models.Employee.email) == form_data.username.lower()
+        )
+    )
+
+    employee = result.scalars().first()
+
+    if not employee or not verify_password(form_data.password, employee.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail = "incorrect email or password",
+            headers = {"WWW-Authenticate": "Bearer"},
+        )
+    
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data= {"sub": str(employee.id)},
+        expires_delta=access_token_expires
+    )
+
+    return Token(access_token=access_token, token_type= "bearer")
+
+
 @router.post(
     '/register',
-    response_model=EmployeeResponse,
+    response_model=EmployeeRegisterResponse,
     status_code=status.HTTP_201_CREATED
 )
 async def register_employee(employee: EmployeeCreate, current_employee: CurrentEmployee, db: Annotated[AsyncSession, Depends(get_db)]):
@@ -34,6 +64,7 @@ async def register_employee(employee: EmployeeCreate, current_employee: CurrentE
     result = await db.execute(
         select(models.Employee)
         .where(func.lower(models.Employee.email) == employee.email.lower())
+        .options(selectinload(models.Employee.tickets_sold))
     )
 
     existing_employee = result.scalars().first()
