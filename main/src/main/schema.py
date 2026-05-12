@@ -1,20 +1,73 @@
 from __future__ import annotations
-from typing import Optional
-# title: Optional[str] = Field(None, min_length=1, max_length=100)
+from typing import Optional, List
 from pydantic import BaseModel, ConfigDict, Field, EmailStr
 from datetime import datetime
 from decimal import Decimal
 from models import SeatCategory, TicketStatus, Role
 
 
+# ==================== BRIEF RESPONSE MODELS (NO CIRCULAR REFERENCES) ====================
+
+class PatronBriefResponse(BaseModel):
+    """Patron without tickets (breaks circular reference)"""
+    id: int
+    first_name: str
+    last_name: str
+    email: str
+    phone: str
+    address: str
+    is_deleted: bool
+    
+    class Config:
+        from_attributes = True
+
+class EmployeeBriefResponse(BaseModel):
+    """Employee without tickets_sold (breaks circular reference)"""
+    id: int
+    full_name: str
+    email: str
+    role: str
+    
+    class Config:
+        from_attributes = True
+
+class ProductionBriefResponse(BaseModel):
+    """Production without performances (breaks circular reference)"""
+    id: int
+    name: str
+    type: str
+    
+    class Config:
+        from_attributes = True
+
+class PerformanceBriefResponse(BaseModel):
+    """Performance without tickets (breaks circular reference)"""
+    id: int
+    performance_datetime: datetime
+    production_id: int
+    production: Optional[ProductionBriefResponse] = None
+    
+    class Config:
+        from_attributes = True
+
+class SeatBriefResponse(BaseModel):
+    """Seat without ticket (simple)"""
+    id: int
+    seat_row: str
+    seat_number: int
+    category: str
+    
+    class Config:
+        from_attributes = True
+
+
+# ==================== FULL RESPONSE MODELS (WITH RELATIONSHIPS) ====================
+
 class EmployeeBase(BaseModel):
     role: Role
     full_name: str = Field(min_length=1, max_length=100)
     email: EmailStr = Field(max_length=100)
-    joined_at: Optional[datetime] = Field(
-        None,
-        description="When the employee started at the company"
-    )
+    joined_at: Optional[datetime] = None
 
 class EmployeeCreate(EmployeeBase):
     password: str = Field(min_length=8)
@@ -24,7 +77,7 @@ class EmployeeRegisterResponse(EmployeeBase):
     id: int 
 
 class EmployeeResponse(EmployeeRegisterResponse):
-    tickets_sold: list[TicketResponse] = []
+    tickets_sold: List["TicketResponse"] = []
 
 
 class PatronBase(BaseModel):
@@ -40,10 +93,11 @@ class PatronCreate(PatronBase):
 class PatronCreateResponse(PatronBase):
     id: int
     created_at: datetime
+    model_config = ConfigDict(from_attributes=True)
 
 class PatronResponse(PatronCreateResponse):
     is_deleted: bool
-    tickets: list[TicketResponse] = []       
+    tickets: List["TicketResponse"] = []
 
 
 class ProductionBase(BaseModel):
@@ -55,22 +109,24 @@ class ProductionCreate(ProductionBase):
 
 class ProductionCreateResponse(ProductionBase):
     id: int
+    model_config = ConfigDict(from_attributes=True)
 
 class ProductionResponse(ProductionCreateResponse):
-    performances: list[PerformanceResponse] = []
+    performances: List["PerformanceResponse"] = []
+
 
 class PerformanceBase(BaseModel):
     performance_datetime: datetime = Field(description="Date and time of the performance")
-
 
 class PerformanceCreate(PerformanceBase):
     production_id: int
 
 class PerformanceCreateResponse(PerformanceBase):
     production: ProductionResponse
+    model_config = ConfigDict(from_attributes=True)
 
 class PerformanceResponse(PerformanceCreateResponse):
-    tickets: list[TicketResponse] = []
+    tickets: List["TicketResponse"] = []
 
 
 class SeatBase(BaseModel):
@@ -92,6 +148,9 @@ class SeatBulkCreateResponse(BaseModel):
     premium_seats: int
     regular_seats: int
 
+
+# ==================== TICKET SCHEMAS ====================
+
 class TicketBase(BaseModel):
     price: Decimal
     patron_id: int
@@ -110,6 +169,7 @@ class TicketCreateResponse(TicketBase):
     class Config:
         from_attributes = True
 
+# ✅ FIXED: Use BriefResponse models to avoid circular references
 class TicketResponse(BaseModel):
     id: int
     price: Decimal
@@ -119,25 +179,35 @@ class TicketResponse(BaseModel):
     seat_id: int
     clerk_id: int
     created_at: datetime
-    buyer: Optional[dict] = None
-    performance: Optional[dict] = None
-    seat: Optional[dict] = None
-    seller: Optional[dict] = None
+    buyer: Optional[PatronBriefResponse] = None
+    performance: Optional[PerformanceBriefResponse] = None
+    seat: Optional[SeatBriefResponse] = None
+    seller: Optional[EmployeeBriefResponse] = None
     
     class Config:
         from_attributes = True
-        
+
+
 class Token(BaseModel):
     access_token: str
     token_type: str
+
 
 class CursorParams(BaseModel):
     cursor: Optional[int] = None
     limit: int = 5
 
 class PaginatedResponse(BaseModel):
-    items: list[PatronResponse]
+    items: List[PatronResponse]
     next_cursor: Optional[int]
     has_next: bool
     limit: int
 
+
+# ==================== FORWARD REFERENCE RESOLUTION ====================
+
+EmployeeResponse.model_rebuild()
+TicketResponse.model_rebuild()
+PerformanceResponse.model_rebuild()
+ProductionResponse.model_rebuild()
+PatronResponse.model_rebuild()
