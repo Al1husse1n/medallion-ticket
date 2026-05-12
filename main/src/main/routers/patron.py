@@ -76,7 +76,7 @@ async def get_patron_data(patron_email:str, current_employee:CurrentEmployee, db
 
     patron = result.scalars().first()
 
-    if not patron:
+    if not patron or patron.is_deleted:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No patron exist with this email"
@@ -104,7 +104,9 @@ async def get_patron(current_employee:CurrentEmployee, db: Annotated[AsyncSessio
     
     result = await db.execute(
         select(models.Patron)
+        .where(models.Patron.is_deleted == True)
         .options(selectinload(models.Patron.tickets))
+    
     )
 
     patrons = result.scalars().all()
