@@ -23,8 +23,15 @@ async def initialize_seats(
 ):
     """Initialize the fixed seat inventory (602 seats: A1-Z24 with categories)"""
     
+    # Fetch employee from database to check authorization
+    result = await db.execute(
+        select(models.Employee)
+        .where(func.lower(models.Employee.email) == current_employee.email.lower())
+    )
+    employee = result.scalars().first()
+    
     # Check authorization - only managers can initialize seats
-    if current_employee.role != models.Role.MANAGER:
+    if not employee or employee.role != models.Role.MANAGER:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Only managers can initialize seat inventory"
@@ -111,7 +118,13 @@ async def get_all_seats(
 ):
     """Get all seats (authorized: clerk/manager)"""
     
-    if current_employee.role not in [models.Role.CLERK, models.Role.MANAGER]:
+    result = await db.execute(
+        select(models.Employee)
+        .where(func.lower(models.Employee.email) == current_employee.email.lower())
+    )
+    employee = result.scalars().first()
+    
+    if not employee or employee.role not in [models.Role.CLERK, models.Role.MANAGER]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You are not authorized to view seat list"
@@ -139,7 +152,13 @@ async def get_seats_by_category(
 ):
     """Get seats filtered by category (regular, vip, premium)"""
     
-    if current_employee.role not in [models.Role.CLERK, models.Role.MANAGER]:
+    result = await db.execute(
+        select(models.Employee)
+        .where(func.lower(models.Employee.email) == current_employee.email.lower())
+    )
+    employee = result.scalars().first()
+    
+    if not employee or employee.role not in [models.Role.CLERK, models.Role.MANAGER]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You are not authorized to view seat list"
@@ -182,7 +201,13 @@ async def get_available_seats(
 ):
     """Get all seats that are not sold (no ticket associated)"""
     
-    if current_employee.role not in [models.Role.CLERK, models.Role.MANAGER]:
+    result = await db.execute(
+        select(models.Employee)
+        .where(func.lower(models.Employee.email) == current_employee.email.lower())
+    )
+    employee = result.scalars().first()
+    
+    if not employee or employee.role not in [models.Role.CLERK, models.Role.MANAGER]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You are not authorized to view seat list"
@@ -215,21 +240,28 @@ async def delete_seat(
 ):
     """Delete a seat (only if no associated ticket exists)"""
     
+    # Fetch employee from database to check authorization
+    result = await db.execute(
+        select(models.Employee)
+        .where(func.lower(models.Employee.email) == current_employee.email.lower())
+    )
+    employee = result.scalars().first()
+    
     # Only managers can delete seats
-    if current_employee.role != models.Role.MANAGER:
+    if not employee or employee.role != models.Role.MANAGER:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Only managers can delete seats"
         )
     
     # Get seat with ticket relationship
-    result = await db.execute(
+    seat_result = await db.execute(
         select(models.Seat)
         .where(models.Seat.id == seat_id)
         .options(selectinload(models.Seat.ticket))
     )
     
-    seat = result.scalars().first()
+    seat = seat_result.scalars().first()
     
     if not seat:
         raise HTTPException(

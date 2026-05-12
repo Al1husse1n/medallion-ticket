@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, UTC, time
 import models
 from database import get_db
 from schema import PerformanceCreate, PerformanceCreateResponse, PerformanceResponse
@@ -69,7 +69,7 @@ async def get_performance(
     )
     employee = result.scalars().first()
 
-    if not employee or employee.role !=  "clerk":
+    if not employee or employee.role not in ["clerk", "manager"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You are not authorized to search up performance"
@@ -80,9 +80,15 @@ async def get_performance(
     except ValueError:
         raise HTTPException(400, "Invalid date format. Use YYYY-MM-DD")
     
+    start_of_day = datetime.combine(search_date, time.min, tzinfo=UTC)
+    end_of_day = datetime.combine(search_date + timedelta(days=1), time.min, tzinfo=UTC)
+
     result = await db.execute(
         select(models.Performance)
-        .where(func.date(models.Performance.performance_datetime) == search_date)
+        .where(
+            models.Performance.performance_datetime >= start_of_day,
+            models.Performance.performance_datetime < end_of_day
+        )
         .options(selectinload(models.Performance.tickets), selectinload(models.Performance.production))
         .order_by(models.Performance.performance_datetime)
     )
@@ -92,6 +98,43 @@ async def get_performance(
     if not performances:
         raise HTTPException(404, f"No performances found on {search_date}")
     
+    return performances
+
+@router.get(
+    "/",
+    response_model=list[PerformanceResponse]
+)
+async def list_performances(
+    current_employee: CurrentEmployee,
+    db: Annotated[AsyncSession, Depends(get_db)],
+    future: bool = Query(False, description="Return only future performances")
+):
+    result = await db.execute(
+        select(models.Employee)
+        .where(func.lower(models.Employee.email) == current_employee.email.lower())
+    )
+    employee = result.scalars().first()
+
+    if not employee or employee.role not in ["clerk", "manager"]:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You are not authorized to view performances"
+        )
+
+    query = select(models.Performance).options(
+        selectinload(models.Performance.tickets),
+        selectinload(models.Performance.production)
+    )
+
+    if future:
+        now_utc = datetime.now(UTC)
+        query = query.where(models.Performance.performance_datetime >= now_utc)
+
+    query = query.order_by(models.Performance.performance_datetime)
+
+    result = await db.execute(query)
+    performances = result.scalars().all()
+
     return performances
 
 @router.delete(

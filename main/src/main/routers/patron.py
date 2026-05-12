@@ -62,7 +62,7 @@ async def get_patron_data(patron_email:str, current_employee:CurrentEmployee, db
     )
     employee = result.scalars().first()
 
-    if not employee or employee.role !=  "clerk":
+    if not employee or employee.role not in ["clerk", "manager"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You are not authorized to get patron data"
@@ -96,7 +96,7 @@ async def get_patron(current_employee:CurrentEmployee, db: Annotated[AsyncSessio
     )
     employee = result.scalars().first()
 
-    if not employee or employee.role !=  "clerk":
+    if not employee or employee.role not in ["clerk", "manager"]:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="You are not authorized to get patron list"
@@ -104,10 +104,9 @@ async def get_patron(current_employee:CurrentEmployee, db: Annotated[AsyncSessio
     
     result = await db.execute(
         select(models.Patron)
-        .where(models.Patron.is_deleted == True)
+        .where(models.Patron.is_deleted == False)
         .options(selectinload(models.Patron.tickets))
         .order_by(models.Patron.first_name)
-    
     )
 
     patrons = result.scalars().all()
