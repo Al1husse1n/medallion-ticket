@@ -13,6 +13,7 @@ from database import Base
 
 class SeatCategory(str, Enum):
     VIP = "vip"
+    PREMIUM = "premium"
     REGULAR = "regular"
 
 class TicketStatus(str, Enum):
@@ -148,5 +149,5 @@ class Ticket(Base):
         UniqueConstraint(
             "performance_id", "seat_id",
             name="uq_performance_seat"          #prevents double booking    
-        ),
+        ),          #there must be a comma here -> so its considered as a tuple
     )
