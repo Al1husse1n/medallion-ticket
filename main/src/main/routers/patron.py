@@ -106,6 +106,7 @@ async def get_patron(current_employee:CurrentEmployee, db: Annotated[AsyncSessio
         select(models.Patron)
         .where(models.Patron.is_deleted == True)
         .options(selectinload(models.Patron.tickets))
+        .order_by(models.Patron.first_name)
     
     )
 
