@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Medallion Staff Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-secondary-fixed": "#0e1d29",
+                "tertiary-fixed-dim": "#ffb59b",
+                "secondary-container": "#ffffff",
+                "on-surface": "#051a3e",
+                "surface-container-highest": "#ffffff",
+                "primary-fixed": "#dae2ff",
+                "on-primary-fixed-variant": "#0040a2",
+                "surface-bright": "#ffffff",
+                "secondary-fixed-dim": "#b9c8d9",
+                "on-secondary": "#ffffff",
+                "primary-container": "#003d9b",
+                "tertiary-fixed": "#ffdbcf",
+                "on-primary-container": "#ffffff",
+                "on-error-container": "#93000a",
+                "surface-container-lowest": "#ffffff",
+                "surface-container-high": "#ffffff",
+                "error-container": "#ffdad6",
+                "error": "#ba1a1a",
+                "surface": "#ffffff",
+                "secondary-fixed": "#ffffff",
+                "on-secondary-fixed-variant": "#3a4856",
+                "surface-dim": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "inverse-surface": "#1d3054",
+                "surface-container-low": "#ffffff",
+                "surface-tint": "#003d9b",
+                "on-primary-fixed": "#001848",
+                "inverse-on-surface": "#edf0ff",
+                "surface-container": "#ffffff",
+                "tertiary": "#7b2600",
+                "on-tertiary-fixed-variant": "#812800",
+                "background": "#ffffff",
+                "outline": "#737685",
+                "primary": "#003d9b",
+                "on-error": "#ffffff",
+                "primary-fixed-dim": "#b2c5ff",
+                "inverse-primary": "#b2c5ff",
+                "secondary": "#51606f",
+                "on-primary": "#ffffff",
+                "on-tertiary-container": "#ffc6b2",
+                "on-tertiary-fixed": "#380d00",
+                "outline-variant": "#e2e8f0",
+                "on-background": "#051a3e",
+                "on-surface-variant": "#434654",
+                "tertiary-container": "#a33500",
+                "surface-variant": "#ffffff",
+                "on-secondary-container": "#576675"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "xl": "32px",
+                "gutter": "16px",
+                "margin-desktop": "32px",
+                "xs": "4px",
+                "margin-mobile": "16px",
+                "sm": "12px",
+                "base": "8px",
+                "lg": "24px",
+                "md": "16px"
+        },
+        "fontFamily": {
+                "label-md": ["Inter"],
+                "label-sm": ["Inter"],
+                "body-sm": ["Inter"],
+                "code": ["monospace"],
+                "body-lg": ["Inter"],
+                "headline-md": ["Inter"],
+                "body-md": ["Inter"],
+                "headline-sm": ["Inter"],
+                "headline-lg": ["Inter"]
+        },
+        "fontSize": {
+                "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "code": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+        }
+      },
+    },
+  }
+</script>
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        min-height: 100dvh;
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+</style>
+</head>
+<body class="bg-white text-on-background flex flex-col min-h-screen">
+<main class="flex-grow flex items-center justify-center px-margin-mobile">
+<div class="w-full max-w-md bg-white p-xl rounded-xl border border-outline-variant shadow-sm">
+<!-- Logo/Title Header -->
+<div class="mb-xl text-center">
+<div class="flex justify-center items-center gap-base mb-sm">
+<span class="material-symbols-outlined text-primary text-3xl">theater_comedy</span>
+<h1 class="text-headline-md text-on-surface">Medallion Staff Login</h1>
+</div>
+<p class="text-body-sm text-on-surface-variant">Please enter your credentials to access the portal</p>
+</div>
+<form id="login-form" class="space-y-lg">
+<!-- Email Field -->
+<div class="space-y-xs">
+<label class="text-label-md text-on-surface" for="email">Email Address</label>
+<div class="relative">
+<span class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-md">mail</span>
+<input class="w-full pl-xl pr-md py-sm bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-body-md" id="email" name="email" placeholder="name@medallion.com" required="" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="space-y-xs">
+<div class="flex justify-between items-center">
+<label class="text-label-md text-on-surface" for="password">Password</label>
+<a class="text-label-sm text-primary hover:underline" href="#">Forgot password?</a>
+</div>
+<div class="relative">
+<span class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant text-md">lock</span>
+<input class="w-full pl-xl pr-xl py-sm bg-white border border-outline-variant rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none text-body-md" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<button class="absolute right-md top-1/2 -translate-y-1/2 material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer" type="button">visibility</button>
+</div>
+</div>
+<!-- Remember Me -->
+<div class="flex items-center space-x-sm">
+<input class="w-4 h-4 rounded border-outline-variant text-primary focus:ring-primary" id="remember" type="checkbox"/>
+<label class="text-body-sm text-on-surface-variant select-none" for="remember">Remember me</label>
+</div>
+<!-- Submit Button -->
+<button class="w-full bg-primary hover:bg-primary/90 text-on-primary py-sm rounded-lg font-label-md transition-colors shadow-sm flex items-center justify-center gap-sm" type="submit">
+                Sign In
+                <span class="material-symbols-outlined text-md">login</span>
+</button>
+</form>
+<!-- Footer Note -->
+<div class="mt-xl pt-lg border-t border-outline-variant text-center">
+<p class="text-[12px] text-on-surface-variant leading-relaxed">
+                Authorized personnel only. All access is logged and monitored for security purposes.
+            </p>
+</div>
+</div>
+</main>
+<footer class="py-lg px-gutter flex flex-col md:flex-row justify-between items-center gap-sm text-label-sm text-on-surface-variant border-t border-outline-variant bg-white">
+<span>© 2024 Medallion Theater</span>
+<div class="flex gap-lg">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Support</a>
+</div>
+</footer>
+<script src="./auth.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('login-form');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const rememberCheckbox = document.getElementById('remember');
+
+    const rememberedEmail = localStorage.getItem('remember_email');
+    if (rememberedEmail) {
+      emailInput.value = rememberedEmail;
+      rememberCheckbox.checked = true;
+    }
+
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      if (!email || !password) {
+        showToast('Please enter email and password.', 'error');
+        return;
+      }
+
+      const result = await authService.login(email, password);
+      if (!result.success) {
+        showToast(result.error || 'Login failed', 'error');
+        return;
+      }
+
+      if (rememberCheckbox.checked) {
+        localStorage.setItem('remember_email', email);
+      } else {
+        localStorage.removeItem('remember_email');
+      }
+
+      const role = authService.getCurrentUserRole();
+      if (role === 'manager') {
+        window.location.href = 'manager.html';
+      } else if (role === 'clerk') {
+        window.location.href = 'clerk.html';
+      } else {
+        window.location.href = 'login.html';
+      }
+    });
+  });
+</script>
+</body></html>

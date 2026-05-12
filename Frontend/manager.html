@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Medallion Theater | Admin Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#e2e8f0",
+                        "background": "#ffffff",
+                        "tertiary-container": "#f8fafc",
+                        "tertiary": "#0f172a",
+                        "on-tertiary-container": "#1e293b",
+                        "surface-container-high": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#cbd5e1",
+                        "on-secondary-container": "#475569",
+                        "surface-variant": "#f1f5f9",
+                        "inverse-on-surface": "#f8fafc",
+                        "surface-dim": "#f1f5f9",
+                        "on-surface-variant": "#475569",
+                        "on-secondary-fixed": "#0f172a",
+                        "secondary": "#475569",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#991b1b",
+                        "primary-fixed": "#f1f5f9",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#0f172a",
+                        "surface-tint": "#0f172a",
+                        "secondary-container": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed-variant": "#334155",
+                        "on-primary-fixed-variant": "#1e293b",
+                        "primary": "#0f172a",
+                        "error-container": "#fee2e2",
+                        "on-surface": "#0f172a",
+                        "surface": "#ffffff",
+                        "on-background": "#0f172a",
+                        "primary-container": "#ffffff",
+                        "error": "#b91c1c",
+                        "surface-container": "#ffffff",
+                        "tertiary-fixed": "#f8fafc",
+                        "surface-container-low": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "tertiary-fixed-dim": "#e2e8f0",
+                        "surface-bright": "#ffffff",
+                        "on-tertiary-fixed-variant": "#1e293b",
+                        "surface-container-highest": "#ffffff",
+                        "secondary-fixed-dim": "#cbd5e1",
+                        "secondary-fixed": "#f1f5f9",
+                        "primary-fixed-dim": "#cbd5e1",
+                        "inverse-surface": "#0f172a",
+                        "on-tertiary-fixed": "#0f172a",
+                        "outline": "#94a3b8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "base": "8px",
+                        "lg": "24px",
+                        "margin-mobile": "16px",
+                        "sm": "12px",
+                        "md": "16px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "code": ["monospace"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-sm": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "code": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            min-height: 100dvh;
+        }
+    </style>
+</head>
+<body class="bg-white text-on-surface font-body-md min-h-screen">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center px-margin-mobile md:px-margin-desktop w-full h-16 bg-white border-b border-outline-variant fixed top-0 z-30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface cursor-pointer">menu</span>
+<span class="font-headline-sm text-on-surface">Medallion Theater Admin</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-6 mr-2">
+<a href="manager.html" data-role="manager" class="text-primary font-label-md">Dashboard</a>
+<a href="production_management.html" data-role="manager,clerk" class="text-on-surface-variant hover:text-primary font-label-md">Productions</a>
+<a href="seats.html" data-role="manager,clerk" class="text-on-surface-variant hover:text-primary font-label-md">Seats</a>
+<a href="tickets.html" data-role="manager,clerk" class="text-on-surface-variant hover:text-primary font-label-md">Tickets</a>
+</div>
+<div class="flex items-center gap-4">
+<a href="login.html" class="text-error font-label-md hover:underline">Logout</a>
+<div class="w-8 h-8 rounded-full bg-surface-variant overflow-hidden border border-outline-variant">
+<img alt="Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpoCMcw-LGt-q3TNZkrEGKblOMLVvYz7rzKV8EmG4xY7MpOcgNpPvjq2_KgwooBZFXptQP_G-GP3Y4R-vmWcGNAAHfRFv-e3a7pk-ebLeAwOcsLK_AAJm59cjMXjHSB8UHHMK5M4eYodl_LmxGUAp9fYJsaMODtSxZYz1u264TeOlyjUtWqtxDVfr21wfQzSxy47hfb3oFeqlZycBn4VXjaN7LeMIug6FluDd0eXsW6fCztbRiV_lVReHho__WiW8854Ie7Xo5yOo"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-24 pb-20 px-margin-mobile md:px-margin-desktop max-w-5xl mx-auto">
+<!-- Overview Header -->
+<div class="mb-lg">
+<h1 class="text-headline-md text-on-surface mb-base">Manager Overview</h1>
+<p class="text-on-surface-variant">Daily administrative summary and staff controls.</p>
+</div>
+<!-- Summary Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md mb-xl">
+<div class="bg-white p-lg rounded-xl border border-outline-variant shadow-sm">
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Total Tickets Sold</p>
+<div class="flex items-end gap-base">
+<span id="tickets-sold-count" class="text-headline-lg font-bold text-on-surface">0</span>
+<span class="text-label-md text-green-700 mb-xs font-semibold">+12.5%</span>
+</div>
+</div>
+<div class="bg-white p-lg rounded-xl border border-outline-variant shadow-sm">
+<p class="text-label-sm text-on-surface-variant uppercase tracking-wider mb-xs">Gross Revenue</p>
+<div class="flex items-end gap-base">
+<span id="gross-revenue-count" class="text-headline-lg font-bold text-on-surface">$0.00</span>
+<span class="text-label-md text-green-700 mb-xs font-semibold">Live</span>
+</div>
+</div>
+</div>
+<!-- Administrative Actions -->
+<section class="mb-xl">
+<h2 class="text-headline-sm text-on-surface mb-md">Staff Management</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<button id="onboard-button" class="flex flex-col items-center justify-center p-lg bg-white border border-outline-variant hover:border-on-surface hover:bg-surface-variant transition-colors rounded-xl gap-sm">
+<span class="material-symbols-outlined text-on-surface text-3xl font-light">person_add</span>
+<span class="font-label-md text-on-surface">Onboard New Clerk</span>
+</button>
+<button class="flex flex-col items-center justify-center p-lg bg-white border border-outline-variant hover:border-on-surface hover:bg-surface-variant transition-colors rounded-xl gap-sm">
+<span class="material-symbols-outlined text-on-surface text-3xl font-light">calendar_month</span>
+<span class="font-label-md text-on-surface">Shift Rosters</span>
+</button>
+<button class="flex flex-col items-center justify-center p-lg bg-white border border-outline-variant hover:border-on-surface hover:bg-surface-variant transition-colors rounded-xl gap-sm">
+<span class="material-symbols-outlined text-on-surface text-3xl font-light">monitoring</span>
+<span class="font-label-md text-on-surface">Performance Audits</span>
+</button>
+</div>
+</section>
+<!-- System Health List -->
+<section>
+<h2 class="text-label-md text-on-surface-variant uppercase tracking-wider mb-md">System Health</h2>
+<div class="bg-white rounded-xl border border-outline-variant divide-y divide-outline-variant overflow-hidden shadow-sm">
+<div class="p-md flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="w-2 h-2 rounded-full bg-green-600"></span>
+<span class="text-body-md text-on-surface">Ticket Server</span>
+</div>
+<span class="text-body-sm text-on-surface-variant">99.9% Uptime</span>
+</div>
+<div class="p-md flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<span class="w-2 h-2 rounded-full bg-green-600"></span>
+<span class="text-body-md text-on-surface">Seat Mapping Engine</span>
+</div>
+<span class="text-body-sm text-on-surface-variant">Active</span>
+</div>
+</div>
+</section>
+</main>
+<div class="fixed inset-0 bg-slate-900/40 z-50 hidden items-center justify-center" id="onboard-modal">
+  <div class="w-full max-w-xl mx-auto bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-200">
+    <div class="p-lg border-b border-outline-variant flex items-center justify-between">
+      <div>
+        <h3 class="font-headline-sm text-on-surface">Register New Clerk</h3>
+        <p class="text-body-sm text-on-surface-variant">Enter the account details for the new employee.</p>
+      </div>
+      <button class="text-on-surface-variant hover:text-on-surface" id="onboard-close-button" type="button">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <form id="onboard-form" class="p-lg space-y-md">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+        <div>
+          <label class="block text-label-sm text-on-surface-variant mb-2">Full Name</label>
+          <input id="onboard-fullname" class="w-full border border-outline-variant rounded-lg p-3" type="text" placeholder="Jane Doe" required />
+        </div>
+        <div>
+          <label class="block text-label-sm text-on-surface-variant mb-2">Email</label>
+          <input id="onboard-email" class="w-full border border-outline-variant rounded-lg p-3" type="email" placeholder="jane@medallion.com" required />
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+        <div>
+          <label class="block text-label-sm text-on-surface-variant mb-2">Password</label>
+          <input id="onboard-password" class="w-full border border-outline-variant rounded-lg p-3" type="password" placeholder="Minimum 8 characters" required />
+        </div>
+        <div>
+          <label class="block text-label-sm text-on-surface-variant mb-2">Role</label>
+          <select id="onboard-role" class="w-full border border-outline-variant rounded-lg p-3" required>
+            <option value="clerk">Clerk</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex justify-end gap-3">
+        <button type="button" id="onboard-cancel-button" class="px-6 py-3 rounded-lg border border-outline-variant text-on-surface-variant">Cancel</button>
+        <button type="submit" class="px-6 py-3 rounded-lg bg-primary text-white">Create Clerk</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-white border-t border-outline-variant h-16 flex justify-around items-center px-4 z-50">
+<a href="manager.html" data-role="manager" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-semibold">Overview</span>
+</a>
+<a href="production_management.html" data-role="manager,clerk" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-medium">Productions</span>
+</a>
+<a href="seats.html" data-role="manager,clerk" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">event_seat</span>
+<span class="text-[10px] font-medium">Seats</span>
+</a>
+<a href="tickets.html" data-role="manager,clerk" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="text-[10px] font-medium">Tickets</span>
+</a>
+</nav>
+<script src="./auth.js"></script>
+<script src="./ticket-service.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (!authService.requireAuthorization(['manager'])) {
+      return;
+    }
+    hideUnauthorizedLinks();
+
+    const salesCountEl = document.getElementById('tickets-sold-count');
+    const revenueEl = document.getElementById('gross-revenue-count');
+    const onboardButton = document.getElementById('onboard-button');
+    const onboardModal = document.getElementById('onboard-modal');
+    const onboardCloseButton = document.getElementById('onboard-close-button');
+    const onboardCancelButton = document.getElementById('onboard-cancel-button');
+    const onboardForm = document.getElementById('onboard-form');
+
+    const loadDashboard = async () => {
+      const ticketResult = await ticketService.getTickets();
+      if (!ticketResult.success) {
+        showToast(ticketResult.error || 'Unable to load tickets', 'error');
+        return;
+      }
+      const tickets = ticketResult.data || [];
+      const totalSales = tickets.length;
+      const grossRevenue = tickets.reduce((sum, ticket) => sum + Number(ticket.price || 0), 0);
+      salesCountEl.textContent = totalSales;
+      revenueEl.textContent = `$${grossRevenue.toFixed(2)}`;
+    };
+
+    const openModal = () => onboardModal.classList.remove('hidden');
+    const closeModal = () => onboardModal.classList.add('hidden');
+
+    onboardButton.addEventListener('click', openModal);
+    onboardCloseButton.addEventListener('click', closeModal);
+    onboardCancelButton.addEventListener('click', closeModal);
+
+    onboardForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const fullName = document.getElementById('onboard-fullname').value.trim();
+      const email = document.getElementById('onboard-email').value.trim();
+      const password = document.getElementById('onboard-password').value.trim();
+      const role = document.getElementById('onboard-role').value;
+
+      if (!fullName || !email || !password) {
+        showToast('All fields are required.', 'error');
+        return;
+      }
+
+      const result = await authService.registerEmployee({ full_name: fullName, email, password, role });
+      if (!result.success) {
+        showToast(result.error || 'Unable to create employee', 'error');
+        return;
+      }
+
+      showToast('Clerk account created successfully.', 'success');
+      onboardForm.reset();
+      closeModal();
+      await loadDashboard();
+    });
+
+    await loadDashboard();
+  });
+</script>
+</body></html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Patron Management System</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-secondary-fixed": "#0e1d29",
+                "tertiary-fixed-dim": "#ffb59b",
+                "secondary-container": "#f1f5f9",
+                "on-surface": "#0f172a",
+                "surface-container-highest": "#ffffff",
+                "primary-fixed": "#dae2ff",
+                "on-primary-fixed-variant": "#0040a2",
+                "surface-bright": "#ffffff",
+                "secondary-fixed-dim": "#b9c8d9",
+                "on-secondary": "#ffffff",
+                "primary-container": "#003d9b",
+                "tertiary-fixed": "#ffdbcf",
+                "on-primary-container": "#ffffff",
+                "on-error-container": "#93000a",
+                "surface-container-lowest": "#ffffff",
+                "surface-container-high": "#ffffff",
+                "error-container": "#ffdad6",
+                "error": "#ba1a1a",
+                "surface": "#ffffff",
+                "secondary-fixed": "#f1f5f9",
+                "on-secondary-fixed-variant": "#3a4856",
+                "surface-dim": "#ffffff",
+                "on-tertiary": "#ffffff",
+                "inverse-surface": "#0f172a",
+                "surface-container-low": "#ffffff",
+                "surface-tint": "#003d9b",
+                "on-primary-fixed": "#001848",
+                "inverse-on-surface": "#f8fafc",
+                "surface-container": "#ffffff",
+                "tertiary": "#7b2600",
+                "on-tertiary-fixed-variant": "#812800",
+                "background": "#ffffff",
+                "outline": "#94a3b8",
+                "primary": "#003d9b",
+                "on-error": "#ffffff",
+                "primary-fixed-dim": "#b2c5ff",
+                "inverse-primary": "#b2c5ff",
+                "secondary": "#475569",
+                "on-primary": "#ffffff",
+                "on-tertiary-container": "#ffc6b2",
+                "on-tertiary-fixed": "#380d00",
+                "outline-variant": "#e2e8f0",
+                "on-background": "#0f172a",
+                "on-surface-variant": "#475569",
+                "tertiary-container": "#a33500",
+                "surface-variant": "#f1f5f9",
+                "on-secondary-container": "#334155"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "xl": "32px",
+                "gutter": "16px",
+                "margin-desktop": "32px",
+                "xs": "4px",
+                "margin-mobile": "16px",
+                "sm": "12px",
+                "base": "8px",
+                "lg": "24px",
+                "md": "16px"
+        },
+        "fontFamily": {
+                "label-md": ["Inter"],
+                "label-sm": ["Inter"],
+                "body-sm": ["Inter"],
+                "code": ["monospace"],
+                "body-lg": ["Inter"],
+                "headline-md": ["Inter"],
+                "body-md": ["Inter"],
+                "headline-sm": ["Inter"],
+                "headline-lg": ["Inter"]
+        },
+        "fontSize": {
+                "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "code": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+        }
+      },
+    },
+  }
+</script>
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<!-- Main Header -->
+<header class="bg-surface border-b border-outline-variant h-16 flex items-center px-margin-mobile md:px-margin-desktop sticky top-0 z-50">
+<div class="flex items-center justify-between gap-4 w-full max-w-5xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">account_circle</span>
+<h1 class="font-headline-sm text-primary">Patron Manager</h1>
+</div>
+<a href="login.html" class="text-error font-label-md hover:underline">Logout</a>
+</div>
+</header>
+<main class="flex-1 w-full max-w-5xl mx-auto p-margin-mobile md:p-margin-desktop space-y-lg">
+<!-- Top Action Bar -->
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-md">
+<div>
+<h2 class="font-headline-lg text-on-surface">Patron Directory</h2>
+<p class="text-on-surface-variant body-sm">Manage student organization members and event patrons.</p>
+</div>
+<button class="bg-primary text-on-primary px-lg py-base rounded-lg font-label-md flex items-center gap-base hover:opacity-90 transition-opacity shadow-sm" onclick="document.getElementById('add-modal').classList.remove('hidden')">
+<span class="material-symbols-outlined text-[20px]">add</span>
+            Add New Patron
+        </button>
+</div>
+<!-- Filter & Search -->
+<div class="bg-surface rounded-xl p-md border border-outline-variant shadow-sm">
+<div class="flex flex-col md:flex-row gap-md">
+<div class="flex-1 relative">
+<span class="material-symbols-outlined absolute left-base top-1/2 -translate-y-1/2 text-outline">search</span>
+<input id="search-input" class="w-full bg-surface border border-outline-variant rounded-lg py-base pl-10 pr-base text-body-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none placeholder:text-outline" placeholder="Search by name or email..." type="text"/>
+</div>
+<select class="bg-surface border border-outline-variant rounded-lg px-base py-base text-body-md outline-none focus:ring-2 focus:ring-primary min-w-[180px] text-on-surface">
+<option>All Membership Tiers</option>
+<option>Diamond Circle</option>
+<option>Golden Loge</option>
+<option>Silver Gallery</option>
+</select>
+</div>
+</div>
+<!-- Patron List -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="bg-surface border-b border-outline-variant text-left">
+<th class="px-lg py-md font-label-md text-on-surface-variant">Name</th>
+<th class="px-lg py-md font-label-md text-on-surface-variant">Email</th>
+<th class="px-lg py-md font-label-md text-on-surface-variant">Tier</th>
+<th class="px-lg py-md font-label-md text-on-surface-variant text-right">Actions</th>
+</tr>
+</thead>
+<tbody id="patron-table-body" class="divide-y divide-outline-variant"></tbody>
+</table>
+</div>
+<div class="p-md bg-surface border-t border-outline-variant flex justify-between items-center">
+<span id="patron-summary" class="text-label-sm text-on-surface-variant">Loading patrons...</span>
+<div class="flex gap-base">
+<button id="patron-prev-button" class="p-xs border border-outline-variant rounded hover:bg-surface-variant disabled:opacity-50 text-on-surface-variant" disabled="">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button id="patron-next-button" class="p-xs border border-outline-variant rounded hover:bg-surface-variant text-on-surface-variant">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Add Patron Modal (Simplified CRUD) -->
+<div class="fixed inset-0 bg-on-surface/50 backdrop-blur-sm z-[100] flex items-center justify-center hidden" id="add-modal">
+<div class="bg-surface w-full max-w-lg mx-margin-mobile rounded-xl shadow-2xl overflow-hidden border border-outline-variant">
+<div class="px-lg py-md bg-surface border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-sm text-on-surface">Enroll New Patron</h3>
+<button class="text-on-surface-variant hover:bg-surface-variant p-base rounded-full" onclick="document.getElementById('add-modal').classList.add('hidden')">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<form id="add-patron-form" class="p-lg space-y-md">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div>
+<label class="block font-label-md text-on-surface-variant mb-xs">First Name</label>
+<input id="patron-first-name" class="w-full border border-outline-variant rounded-lg p-base text-body-md focus:ring-2 focus:ring-primary outline-none bg-surface text-on-surface placeholder:text-outline" placeholder="John" type="text" required />
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-xs">Last Name</label>
+<input id="patron-last-name" class="w-full border border-outline-variant rounded-lg p-base text-body-md focus:ring-2 focus:ring-primary outline-none bg-surface text-on-surface placeholder:text-outline" placeholder="Doe" type="text" required />
+</div>
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-xs">Email Address</label>
+<input id="patron-email" class="w-full border border-outline-variant rounded-lg p-base text-body-md focus:ring-2 focus:ring-primary outline-none bg-surface text-on-surface placeholder:text-outline" placeholder="john@example.com" type="email" required />
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div>
+<label class="block font-label-md text-on-surface-variant mb-xs">Phone</label>
+<input id="patron-phone" class="w-full border border-outline-variant rounded-lg p-base text-body-md focus:ring-2 focus:ring-primary outline-none bg-surface text-on-surface placeholder:text-outline" placeholder="(555) 123-4567" type="tel" required />
+</div>
+<div>
+<label class="block font-label-md text-on-surface-variant mb-xs">Address</label>
+<input id="patron-address" class="w-full border border-outline-variant rounded-lg p-base text-body-md focus:ring-2 focus:ring-primary outline-none bg-surface text-on-surface placeholder:text-outline" placeholder="123 Main St" type="text" required />
+</div>
+</div>
+<div class="pt-md flex gap-md">
+<button class="flex-1 py-base border border-outline-variant text-on-surface rounded-lg font-label-md hover:bg-surface-variant transition-colors" onclick="document.getElementById('add-modal').classList.add('hidden')" type="button">Cancel</button>
+<button class="flex-1 py-base bg-primary text-on-primary rounded-lg font-label-md hover:opacity-90 shadow-sm transition-all" type="submit">Save Patron</button>
+</div>
+</form>
+</div>
+</div>
+<!-- Mobile Bottom Navigation (CRUD Context) -->
+<nav class="md:hidden fixed bottom-0 w-full bg-surface border-t border-outline-variant h-16 flex justify-around items-center px-md z-50">
+<a href="clerk.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-label-sm">Dashboard</span>
+</a>
+<a href="patron_management.html" class="flex flex-col items-center justify-center text-primary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-label-sm">Patrons</span>
+</a>
+<a href="production_management.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-[10px] font-label-sm">Productions</span>
+</a>
+<a href="manager.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="text-[10px] font-label-sm">Manager</span>
+</a>
+</nav>
+<script src="./auth.js"></script>
+<script src="./patron-service.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (!authService.requireAuthorization(['clerk'])) {
+      return;
+    }
+    hideUnauthorizedLinks();
+
+    const searchInput = document.getElementById('search-input');
+    const patronBody = document.getElementById('patron-table-body');
+    const patronSummary = document.getElementById('patron-summary');
+    const addForm = document.getElementById('add-patron-form');
+    const nextButton = document.getElementById('patron-next-button');
+    const prevButton = document.getElementById('patron-prev-button');
+
+    let cursor = null;
+    let patronsCache = [];
+
+    const renderPatronRows = (patrons) => {
+      patronBody.innerHTML = patrons.length ? patrons.map((patron) => {
+        const fullName = `${patron.first_name} ${patron.last_name}`;
+        return `
+          <tr class="hover:bg-surface-variant transition-colors">
+            <td class="px-lg py-md">
+              <div class="flex items-center gap-md">
+                <div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center font-bold border border-outline-variant">${patron.first_name?.[0] || ''}${patron.last_name?.[0] || ''}</div>
+                <span class="font-body-md font-semibold text-on-surface">${fullName}</span>
+              </div>
+            </td>
+            <td class="px-lg py-md text-on-surface-variant body-md">${patron.email}</td>
+            <td class="px-lg py-md">
+              <span class="bg-primary-container text-on-primary px-sm py-xs rounded-full text-label-sm">Patron</span>
+            </td>
+            <td class="px-lg py-md text-right">
+              <button class="text-primary hover:bg-surface-variant p-base rounded-full transition-colors" type="button" data-edit-email="${patron.email}">
+                <span class="material-symbols-outlined">edit</span>
+              </button>
+              <button class="text-error hover:bg-surface-variant p-base rounded-full transition-colors" type="button" data-delete-email="${patron.email}">
+                <span class="material-symbols-outlined">delete</span>
+              </button>
+            </td>
+          </tr>`;
+      }).join('') : '<tr><td class="px-lg py-md text-on-surface" colspan="4">No patrons found.</td></tr>';
+    };
+
+    const loadPatrons = async (currentCursor = null) => {
+      const result = await patronService.getPatrons(currentCursor);
+      if (!result.success) {
+        showToast(result.error || 'Unable to load patrons', 'error');
+        return;
+      }
+      patronsCache = result.data || [];
+      renderPatronRows(patronsCache);
+      patronSummary.textContent = `Showing ${patronsCache.length} patrons`;
+      cursor = patronsCache.length ? patronsCache[patronsCache.length - 1].id : null;
+      prevButton.disabled = true;
+      nextButton.disabled = patronsCache.length < 20;
+    };
+
+    const filterResults = () => {
+      const query = searchInput.value.trim().toLowerCase();
+      if (!query) {
+        renderPatronRows(patronsCache);
+        patronSummary.textContent = `Showing ${patronsCache.length} patrons`;
+        return;
+      }
+      const filtered = patronsCache.filter((patron) => {
+        const fullName = `${patron.first_name} ${patron.last_name}`.toLowerCase();
+        return fullName.includes(query) || patron.email.toLowerCase().includes(query);
+      });
+      renderPatronRows(filtered);
+      patronSummary.textContent = `Showing ${filtered.length} filtered patrons`;
+    };
+
+    searchInput.addEventListener('input', filterResults);
+
+    patronBody.addEventListener('click', async (event) => {
+      const deleteButton = event.target.closest('[data-delete-email]');
+      const editButton = event.target.closest('[data-edit-email]');
+      if (deleteButton) {
+        const email = deleteButton.dataset.deleteEmail;
+        if (!confirm(`Delete patron ${email}? This is a soft delete.`)) {
+          return;
+        }
+        const result = await patronService.deletePatron(email);
+        if (!result.success) {
+          showToast(result.error || 'Unable to delete patron', 'error');
+          return;
+        }
+        showToast('Patron deleted successfully.', 'success');
+        await loadPatrons(cursor);
+      }
+      if (editButton) {
+        showToast('Edit is not available yet. Backend update endpoint required.', 'info');
+      }
+    });
+
+    addForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const firstName = document.getElementById('patron-first-name').value.trim();
+      const lastName = document.getElementById('patron-last-name').value.trim();
+      const email = document.getElementById('patron-email').value.trim();
+      const phone = document.getElementById('patron-phone').value.trim();
+      const address = document.getElementById('patron-address').value.trim();
+
+      if (!firstName || !lastName || !email || !phone || !address) {
+        showToast('Please complete all patron fields.', 'error');
+        return;
+      }
+
+      const result = await patronService.registerPatron({ first_name: firstName, last_name: lastName, email, phone, address });
+      if (!result.success) {
+        showToast(result.error || 'Unable to register patron', 'error');
+        return;
+      }
+      showToast('Patron registered successfully.', 'success');
+      addForm.reset();
+      document.getElementById('add-modal').classList.add('hidden');
+      await loadPatrons(cursor);
+    });
+
+    nextButton.addEventListener('click', async () => {
+      if (!cursor) return;
+      await loadPatrons(cursor);
+    });
+
+    prevButton.addEventListener('click', async () => {
+      showToast('Previous page support requires backend cursor metadata.', 'info');
+    });
+
+    await loadPatrons();
+  });
+</script>
+</body></html>

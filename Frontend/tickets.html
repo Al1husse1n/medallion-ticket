@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ticket Dashboard | Medallion Theater</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          background: "#ffffff",
+          surface: "#ffffff",
+          "on-surface": "#0f172a",
+          primary: "#003d9b",
+          "on-primary": "#ffffff",
+          "outline-variant": "#e2e8f0",
+          "surface-variant": "#f1f5f9",
+          "on-surface-variant": "#475569",
+        },
+        borderRadius: {
+          DEFAULT: "0.125rem",
+          lg: "0.25rem",
+          xl: "0.5rem",
+          full: "0.75rem",
+        },
+        spacing: {
+          xl: "32px",
+          gutter: "16px",
+          "margin-desktop": "32px",
+          xs: "4px",
+          "margin-mobile": "16px",
+          sm: "12px",
+          base: "8px",
+          lg: "24px",
+          md: "16px",
+        },
+      },
+    },
+  };
+</script>
+<style>
+  body { font-family: 'Inter', sans-serif; }
+  .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+</style>
+</head>
+<body class="bg-background text-on-surface min-h-screen">
+<header class="bg-white border-b border-outline-variant sticky top-0 z-40 px-margin-mobile md:px-margin-desktop py-base flex items-center justify-between">
+  <div class="flex items-center gap-3">
+    <span class="material-symbols-outlined text-primary text-3xl">confirmation_number</span>
+    <div>
+      <h1 class="text-headline-md font-semibold">Ticket Dashboard</h1>
+      <p class="text-body-sm text-on-surface-variant">View sold and open ticket orders.</p>
+    </div>
+  </div>
+  <div class="flex items-center gap-4">
+    <a href="login.html" class="text-error font-label-md hover:underline">Logout</a>
+  </div>
+</header>
+<main class="px-margin-mobile md:px-margin-desktop py-lg max-w-6xl mx-auto space-y-lg">
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+    <div class="bg-surface border border-outline-variant rounded-xl p-md shadow-sm">
+      <p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Total Tickets</p>
+      <p id="ticket-count" class="text-headline-lg font-bold text-on-surface">0</p>
+    </div>
+    <div class="bg-surface border border-outline-variant rounded-xl p-md shadow-sm">
+      <p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Recent Sales</p>
+      <p id="recent-sales-count" class="text-headline-lg font-bold text-on-surface">0</p>
+    </div>
+    <div class="bg-surface border border-outline-variant rounded-xl p-md shadow-sm">
+      <p class="text-label-sm text-on-surface-variant uppercase tracking-wider">Revenue Today</p>
+      <p id="ticket-revenue" class="text-headline-lg font-bold text-on-surface">$0.00</p>
+    </div>
+  </div>
+  <div class="bg-surface border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left border-collapse">
+        <thead class="bg-surface-variant border-b border-outline-variant">
+          <tr>
+            <th class="px-lg py-md font-label-md text-on-surface-variant">Ticket</th>
+            <th class="px-lg py-md font-label-md text-on-surface-variant">Buyer</th>
+            <th class="px-lg py-md font-label-md text-on-surface-variant">Show</th>
+            <th class="px-lg py-md font-label-md text-on-surface-variant">Seat</th>
+            <th class="px-lg py-md font-label-md text-on-surface-variant">Price</th>
+          </tr>
+        </thead>
+        <tbody id="ticket-table-body" class="divide-y divide-outline-variant"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+<nav class="md:hidden fixed bottom-0 w-full bg-white border-t border-outline-variant h-16 flex justify-around items-center px-4 z-50">
+  <a data-role="manager" href="manager.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+    <span class="material-symbols-outlined">home</span>
+    <span class="text-[10px] font-medium">Manager</span>
+  </a>
+  <a data-role="clerk" href="clerk.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+    <span class="material-symbols-outlined">dashboard</span>
+    <span class="text-[10px] font-medium">Clerk</span>
+  </a>
+  <a data-role="manager,clerk" href="production_management.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+    <span class="material-symbols-outlined">theater_comedy</span>
+    <span class="text-[10px] font-medium">Shows</span>
+  </a>
+  <a data-role="manager,clerk" href="seats.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+    <span class="material-symbols-outlined">event_seat</span>
+    <span class="text-[10px] font-medium">Seats</span>
+  </a>
+  <a data-role="manager,clerk" href="tickets.html" class="flex flex-col items-center justify-center text-primary">
+    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+    <span class="text-[10px] font-medium">Tickets</span>
+  </a>
+</nav>
+<script src="./auth.js"></script>
+<script src="./ticket-service.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (!authService.requireAuthorization(['manager', 'clerk'])) {
+      return;
+    }
+    hideUnauthorizedLinks();
+
+    const ticketCount = document.getElementById('ticket-count');
+    const recentSalesCount = document.getElementById('recent-sales-count');
+    const ticketRevenue = document.getElementById('ticket-revenue');
+    const ticketTableBody = document.getElementById('ticket-table-body');
+
+    const renderTickets = (tickets) => {
+      ticketTableBody.innerHTML = tickets.length
+        ? tickets.slice(0, 40).map((ticket) => {
+            const buyer = ticket.buyer ? `${ticket.buyer.first_name || ''} ${ticket.buyer.last_name || ''}`.trim() : `Patron #${ticket.patron_id}`;
+            const showName = ticket.performance?.production?.name || 'Unknown show';
+            const seatLocation = ticket.seat ? `${ticket.seat.seat_row}${ticket.seat.seat_number}` : 'N/A';
+            return `
+              <tr class="hover:bg-surface-variant transition-colors">
+                <td class="px-lg py-md font-medium text-on-surface">#${ticket.id}</td>
+                <td class="px-lg py-md text-on-surface-variant">${buyer}</td>
+                <td class="px-lg py-md text-on-surface-variant">${showName}</td>
+                <td class="px-lg py-md text-on-surface-variant">${seatLocation}</td>
+                <td class="px-lg py-md text-on-surface-variant">$${Number(ticket.price || 0).toFixed(2)}</td>
+              </tr>
+            `;
+          }).join('')
+        : '<tr><td class="px-lg py-md text-on-surface" colspan="5">No ticket sales available.</td></tr>';
+    };
+
+    const loadTickets = async () => {
+      const result = await ticketService.getTickets();
+      if (!result.success) {
+        showToast(result.error || 'Unable to load tickets.', 'error');
+        return;
+      }
+      const tickets = result.data || [];
+      ticketCount.textContent = tickets.length;
+      recentSalesCount.textContent = tickets.slice(0, 10).length;
+      const today = new Date().toISOString().slice(0, 10);
+      const revenueToday = tickets.reduce((sum, ticket) => {
+        const created = ticket.created_at ? ticket.created_at.slice(0, 10) : '';
+        if (created === today && ticket.status !== 'cancelled') {
+          return sum + Number(ticket.price || 0);
+        }
+        return sum;
+      }, 0);
+      ticketRevenue.textContent = `$${revenueToday.toFixed(2)}`;
+      renderTickets(tickets);
+    };
+
+    await loadTickets();
+  });
+</script>
+</body>
+</html>

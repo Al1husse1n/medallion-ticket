@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Clerk Dashboard - Medallion Theater</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#0e1d29",
+                    "tertiary-fixed-dim": "#ffb59b",
+                    "secondary-container": "#ffffff",
+                    "on-surface": "#051a3e",
+                    "surface-container-highest": "#ffffff",
+                    "primary-fixed": "#dae2ff",
+                    "on-primary-fixed-variant": "#0040a2",
+                    "surface-bright": "#ffffff",
+                    "secondary-fixed-dim": "#b9c8d9",
+                    "on-secondary": "#ffffff",
+                    "primary-container": "#003d9b",
+                    "tertiary-fixed": "#ffdbcf",
+                    "on-primary-container": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-high": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "surface": "#ffffff",
+                    "secondary-fixed": "#ffffff",
+                    "on-secondary-fixed-variant": "#3a4856",
+                    "surface-dim": "#ffffff",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#1d3054",
+                    "surface-container-low": "#ffffff",
+                    "surface-tint": "#0c56d0",
+                    "on-primary-fixed": "#001848",
+                    "inverse-on-surface": "#edf0ff",
+                    "surface-container": "#ffffff",
+                    "tertiary": "#7b2600",
+                    "on-tertiary-fixed-variant": "#812800",
+                    "background": "#ffffff",
+                    "outline": "#737685",
+                    "primary": "#003d9b",
+                    "on-error": "#ffffff",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "inverse-primary": "#b2c5ff",
+                    "secondary": "#51606f",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-container": "#ffc6b2",
+                    "on-tertiary-fixed": "#380d00",
+                    "outline-variant": "#e2e8f0",
+                    "on-background": "#051a3e",
+                    "on-surface-variant": "#475569",
+                    "tertiary-container": "#a33500",
+                    "surface-variant": "#ffffff",
+                    "on-secondary-container": "#576675"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "32px",
+                    "gutter": "16px",
+                    "margin-desktop": "32px",
+                    "xs": "4px",
+                    "margin-mobile": "16px",
+                    "sm": "12px",
+                    "base": "8px",
+                    "lg": "24px",
+                    "md": "16px"
+            },
+            "fontFamily": {
+                    "label-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "code": ["monospace"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-sm": ["Inter"],
+                    "headline-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "code": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-body-md bg-white text-on-surface">
+<!-- TopAppBar Navigation Shell -->
+<header class="bg-white border-b border-outline-variant text-on-surface w-full h-16 sticky top-0 z-40 px-gutter flex justify-between items-center">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined cursor-pointer text-on-surface">menu</span>
+<h1 class="font-headline-sm text-on-surface">Medallion Theater</h1>
+</div>
+<div class="flex items-center gap-lg">
+<nav class="hidden md:flex gap-md">
+<a data-role="clerk" class="text-primary font-label-md" href="clerk.html">Dashboard</a>
+<a data-role="manager,clerk" class="text-on-surface-variant font-label-md hover:text-primary" href="production_management.html">Performances</a>
+<a data-role="manager,clerk" class="text-on-surface-variant font-label-md hover:text-primary" href="tickets.html">Box Office</a>
+<a data-role="clerk" class="text-on-surface-variant font-label-md hover:text-primary" href="patron_management.html">Patrons</a>
+</nav>
+<a href="login.html" class="text-error font-label-md hover:underline">Logout</a>
+<div class="h-8 w-8 rounded-full bg-slate-100 overflow-hidden border border-outline-variant">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDh820MBVeLQjKWkZ49CafwEhbE7j1xU40B48Hbl0-VEaIxLuFC9IuDfS6dAeN8HHSuSNpyzpqoWmSPr9B7fgFX3MYy1c8adaweYaQ9cabt7eF6ws-oHFch_C_-s4dKh0xk9XoqAi7hQ5qL0K28JVqCkwX6KAIOYQHZFhdBpqYn6yn4d6EwsUykauzklV1elZXb8ZhXv5H3CVC5a1VEyDCXs_OPCrnhJFaR2NwIF3Fg4QARKpGoyCrUETieyIUQYHlG8zUqKoB5THU"/>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- Desktop Sidebar -->
+<aside class="hidden lg:flex flex-col w-64 h-[calc(100vh-64px)] bg-white border-r border-outline-variant fixed top-16 left-0">
+<nav class="p-md flex flex-col gap-xs">
+<a data-role="clerk" class="flex items-center gap-md p-sm bg-slate-100 text-primary rounded-lg" href="clerk.html">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="font-label-md">Overview</span>
+</a>
+<a data-role="manager,clerk" class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-slate-50 rounded-lg transition-colors" href="production_management.html">
+<span class="material-symbols-outlined text-[20px]">theater_comedy</span>
+<span class="font-label-md">Shows</span>
+</a>
+<a data-role="manager,clerk" class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-slate-50 rounded-lg transition-colors" href="tickets.html">
+<span class="material-symbols-outlined text-[20px]">confirmation_number</span>
+<span class="font-label-md">Tickets</span>
+</a>
+<a data-role="clerk" class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-slate-50 rounded-lg transition-colors" href="patron_management.html">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-label-md">Patrons</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 lg:ml-64 p-gutter pb-24 bg-white min-h-screen">
+<div class="max-w-5xl mx-auto">
+<header class="mb-lg flex flex-col md:flex-row md:items-center md:justify-between gap-md">
+<div>
+<h2 class="font-headline-md text-on-surface">Dashboard Overview</h2>
+<p class="text-body-sm text-on-surface-variant">Manage daily operations and ticket sales.</p>
+</div>
+<button id="new-sale-button" class="bg-primary text-on-primary px-lg py-sm rounded-lg font-label-md flex items-center gap-sm active:scale-95 transition-transform shadow-sm">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                    New Sale
+                </button>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Status Summary (Available vs Sold) -->
+<section class="bg-white border border-outline-variant rounded-xl p-md flex flex-col gap-md">
+<h3 class="font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Seating Status</h3>
+<div class="flex items-end justify-between">
+<div class="flex flex-col">
+<span id="available-seats-count" class="text-headline-lg font-bold text-primary">0</span>
+<span class="text-body-sm text-on-surface-variant">Available</span>
+</div>
+<div class="flex flex-col text-right">
+<span id="sold-seats-count" class="text-headline-lg font-bold text-secondary">0</span>
+<span class="text-body-sm text-on-surface-variant">Sold</span>
+</div>
+</div>
+<div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden flex">
+<div class="bg-primary h-full" style="width: 71%"></div>
+<div class="bg-slate-300 h-full" style="width: 29%"></div>
+</div>
+</section>
+<!-- Daily Revenue -->
+<section class="bg-white border border-outline-variant rounded-xl p-md flex flex-col gap-md">
+<h3 class="font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Revenue Today</h3>
+<div class="flex items-center justify-between">
+<span id="daily-revenue-count" class="text-headline-lg font-bold text-on-surface">$0.00</span>
+<div class="flex items-center gap-xs text-green-700 bg-green-50 px-sm py-xs rounded-full border border-green-100">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="text-label-sm">12%</span>
+</div>
+</div>
+<p class="text-body-sm text-on-surface-variant">Growth from yesterday's closing.</p>
+</section>
+<!-- Performances Card (Simplified) -->
+<section class="md:col-span-2 lg:col-span-1 bg-white border border-outline-variant rounded-xl p-md overflow-hidden">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Today's Shows</h3>
+<a class="text-primary text-label-sm hover:underline" href="#">View All</a>
+</div>
+<div class="flex flex-col divide-y divide-outline-variant">
+<div class="py-sm flex items-center justify-between">
+<div>
+<p class="font-label-md text-on-surface">The Phantom’s Echo</p>
+<p class="text-body-sm text-on-surface-variant">14:30 • Main Stage</p>
+</div>
+<span class="px-sm py-xs bg-green-50 text-green-700 text-label-sm rounded-lg border border-green-100">On Time</span>
+</div>
+<div class="py-sm flex items-center justify-between">
+<div>
+<p class="font-label-md text-on-surface">Overture in Obsidian</p>
+<p class="text-body-sm text-on-surface-variant">19:00 • Studio</p>
+</div>
+<span class="px-sm py-xs bg-green-50 text-green-700 text-label-sm rounded-lg border border-green-100">On Time</span>
+</div>
+</div>
+</section>
+<!-- Recent Sales (Simplified List) -->
+<section class="md:col-span-2 lg:col-span-3 bg-white border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-md border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-label-md text-on-surface-variant uppercase tracking-wider text-[11px]">Recent Transactions</h3>
+<button class="text-primary text-label-sm font-label-md flex items-center gap-xs">
+                            Export List <span class="material-symbols-outlined text-[16px]">download</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-slate-50 text-on-surface-variant text-[11px] font-bold uppercase">
+<tr>
+<th class="px-md py-sm">Patron</th>
+<th class="px-md py-sm">Production</th>
+<th class="px-md py-sm">Seats</th>
+<th class="px-md py-sm text-right">Amount</th>
+</tr>
+</thead>
+<tbody id="recent-transactions-body" class="divide-y divide-outline-variant"></tbody>
+</table>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+<div class="fixed inset-0 bg-slate-900/40 z-50 hidden items-center justify-center" id="sale-modal">
+  <div class="w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200">
+    <div class="flex items-center justify-between p-lg border-b border-outline-variant">
+      <div>
+        <h3 class="font-headline-sm text-on-surface">New Ticket Sale</h3>
+        <p class="text-body-sm text-on-surface-variant">Select patron, performance, and seat to complete the sale.</p>
+      </div>
+      <button type="button" id="sale-close-button" class="text-on-surface-variant hover:text-on-surface">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+    </div>
+    <form id="sale-form" class="p-lg space-y-md">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+        <div>
+          <label class="block text-label-sm text-on-surface-variant mb-2">Patron Email</label>
+          <div class="flex gap-2">
+            <input id="sale-patron-email" class="w-full border border-outline-variant rounded-lg p-3" type="email" placeholder="patron@example.com" required />
+            <button id="find-patron-button" type="button" class="inline-flex items-center px-4 py-3 rounded-lg bg-primary text-white">Find</button>
+          </div>
+          <p id="sale-patron-name" class="mt-2 text-body-sm text-on-surface-variant"></p>
+          <input type="hidden" id="sale-patron-id" />
+        </div>
+        <div>
+          <label class="block text-label-sm text-on-surface-variant mb-2">Performance</label>
+          <select id="sale-performance-id" class="w-full border border-outline-variant rounded-lg p-3" required></select>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+        <div>
+          <label class="block text-label-sm text-on-surface-variant mb-2">Available Seat</label>
+          <select id="sale-seat-id" class="w-full border border-outline-variant rounded-lg p-3" required></select>
+        </div>
+        <div>
+          <label class="block text-label-sm text-on-surface-variant mb-2">Ticket Price</label>
+          <input id="sale-price" class="w-full border border-outline-variant rounded-lg p-3" type="number" min="0" step="0.01" value="0.00" required />
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row items-center justify-end gap-3">
+        <button type="button" id="sale-cancel-button" class="px-6 py-3 rounded-lg border border-outline-variant text-on-surface-variant">Cancel</button>
+        <button type="submit" class="px-6 py-3 rounded-lg bg-primary text-white">Confirm Sale</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- BottomNavBar for Mobile -->
+<nav class="bg-white border-t border-outline-variant fixed bottom-0 w-full z-50 flex justify-around items-center h-16 md:hidden px-md">
+<a data-role="clerk" href="clerk.html" class="flex flex-col items-center justify-center text-primary hover:text-primary transition-colors">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-label-md">Home</span>
+</a>
+<a data-role="manager,clerk" href="production_management.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">theater_comedy</span>
+<span class="text-[10px] font-label-md">Shows</span>
+</a>
+<a data-role="manager,clerk" href="tickets.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="text-[10px] font-label-md">Tickets</span>
+</a>
+<a data-role="clerk" href="patron_management.html" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">group</span>
+<span class="text-[10px] font-label-md">Patrons</span>
+</a>
+</nav>
+<script src="./auth.js"></script>
+<script src="./patron-service.js"></script>
+<script src="./performance-service.js"></script>
+<script src="./seat-service.js"></script>
+<script src="./ticket-service.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (!authService.requireAuthorization(['clerk', 'manager'])) {
+      return;
+    }
+    hideUnauthorizedLinks();
+
+    const availableCountEl = document.getElementById('available-seats-count');
+    const soldCountEl = document.getElementById('sold-seats-count');
+    const revenueCountEl = document.getElementById('daily-revenue-count');
+    const transactionBody = document.getElementById('recent-transactions-body');
+    const saleModal = document.getElementById('sale-modal');
+    const newSaleButton = document.getElementById('new-sale-button');
+    const saleCloseButton = document.getElementById('sale-close-button');
+    const saleCancelButton = document.getElementById('sale-cancel-button');
+    const saleForm = document.getElementById('sale-form');
+    const findPatronButton = document.getElementById('find-patron-button');
+    const patronEmailInput = document.getElementById('sale-patron-email');
+    const patronNameText = document.getElementById('sale-patron-name');
+    const patronIdInput = document.getElementById('sale-patron-id');
+    const performanceSelect = document.getElementById('sale-performance-id');
+    const seatSelect = document.getElementById('sale-seat-id');
+    const priceInput = document.getElementById('sale-price');
+
+    const openModal = () => saleModal.classList.remove('hidden');
+    const closeModal = () => saleModal.classList.add('hidden');
+
+    newSaleButton.addEventListener('click', openModal);
+    saleCloseButton.addEventListener('click', closeModal);
+    saleCancelButton.addEventListener('click', closeModal);
+
+    const renderTransactions = (tickets) => {
+      transactionBody.innerHTML = tickets.length ? tickets.map((ticket) => {
+        const buyer = ticket.buyer?.first_name && ticket.buyer?.last_name ? `${ticket.buyer.first_name} ${ticket.buyer.last_name}` : `Patron #${ticket.patron_id}`;
+        const production = ticket.performance?.production?.name || 'Unknown show';
+        const seats = ticket.seat ? `${ticket.seat.seat_row}${ticket.seat.seat_number}` : 'N/A';
+        return `
+          <tr class="hover:bg-slate-50 transition-colors">
+            <td class="px-md py-sm">
+              <p class="font-label-md text-on-surface">${buyer}</p>
+              <p class="text-body-sm text-on-surface-variant">#${ticket.id}</p>
+            </td>
+            <td class="px-md py-sm text-body-sm text-on-surface">${production}</td>
+            <td class="px-md py-sm text-body-sm text-on-surface">${seats}</td>
+            <td class="px-md py-sm text-right font-label-md text-on-surface">$${Number(ticket.price || 0).toFixed(2)}</td>
+          </tr>
+        `;
+      }).join('') : '<tr><td class="px-md py-sm text-on-surface" colspan="4">No recent transactions found.</td></tr>';
+    };
+
+    const loadDashboard = async () => {
+      const [ticketsResult, availableResult, allSeatsResult] = await Promise.all([
+        ticketService.getTickets(),
+        seatService.getAvailableSeats(),
+        seatService.getSeats(),
+      ]);
+
+      if (!ticketsResult.success) {
+        showToast(ticketsResult.error || 'Unable to load tickets', 'error');
+        return;
+      }
+      if (!availableResult.success) {
+        showToast(availableResult.error || 'Unable to load available seats', 'error');
+        return;
+      }
+      if (!allSeatsResult.success) {
+        showToast(allSeatsResult.error || 'Unable to load seats', 'error');
+        return;
+      }
+
+      const tickets = ticketsResult.data || [];
+      const availableSeats = availableResult.data || [];
+      const allSeats = allSeatsResult.data || [];
+
+      const soldCount = allSeats.length - availableSeats.length;
+      availableCountEl.textContent = availableSeats.length;
+      soldCountEl.textContent = soldCount >= 0 ? soldCount : 0;
+
+      const today = new Date().toISOString().slice(0, 10);
+      const dailyRevenue = tickets.reduce((sum, ticket) => {
+        const created = ticket.created_at ? ticket.created_at.slice(0, 10) : '';
+        if (created === today && ticket.status !== 'cancelled') {
+          return sum + Number(ticket.price || 0);
+        }
+        return sum;
+      }, 0);
+      revenueCountEl.textContent = `$${dailyRevenue.toFixed(2)}`;
+      renderTransactions(tickets);
+    };
+
+    const populatePerformanceOptions = async () => {
+      const performanceResult = await performanceService.getUpcomingPerformances();
+      if (!performanceResult.success) {
+        showToast("Unable to load performances. " + (performanceResult.error || 'Unknown error'), "error");
+        performanceSelect.innerHTML = '<option value="">Unable to load performances</option>';
+        return;
+      }
+      const performances = performanceResult.data || [];
+      if (performances.length === 0) {
+        performanceSelect.innerHTML = '<option value="">No upcoming performances available</option>';
+        return;
+      }
+      performanceSelect.innerHTML = performances.map((performance) => {
+        const label = `${performance.production?.name || 'Show'} - ${new Date(performance.performance_datetime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        return `<option value="${performance.id}">${label}</option>`;
+      }).join('');
+    };
+
+    const populateSeatOptions = async () => {
+      const availableResult = await seatService.getAvailableSeats();
+      if (!availableResult.success) {
+        seatSelect.innerHTML = '<option value="">Unable to load seats</option>';
+        return;
+      }
+      const seats = availableResult.data || [];
+      seatSelect.innerHTML = seats.map((seat) => `<option value="${seat.id}">${seat.seat_row}${seat.seat_number} (${seat.category})</option>`).join('');
+    };
+
+    findPatronButton.addEventListener('click', async () => {
+      const email = patronEmailInput.value.trim();
+      if (!email) {
+        showToast('Enter a patron email to search.', 'error');
+        return;
+      }
+      const patronResult = await patronService.getPatronByEmail(email);
+      if (!patronResult.success) {
+        patronNameText.textContent = '';
+        patronIdInput.value = '';
+        showToast(patronResult.error || 'Patron not found', 'error');
+        return;
+      }
+      const patron = patronResult.data;
+      patronIdInput.value = patron.id;
+      patronNameText.textContent = `${patron.first_name} ${patron.last_name}`;
+      showToast('Patron loaded successfully.', 'success');
+    });
+
+    saleForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const patronId = Number(patronIdInput.value);
+      const performanceId = Number(performanceSelect.value);
+      const seatId = Number(seatSelect.value);
+      const price = Number(priceInput.value);
+
+      if (!patronId || !performanceId || !seatId || price <= 0) {
+        showToast('Complete all sale fields before confirming.', 'error');
+        return;
+      }
+
+      const saleResult = await ticketService.createTicket({ patron_id: patronId, performance_id: performanceId, seat_id: seatId, price });
+      if (!saleResult.success) {
+        showToast(saleResult.error || 'Unable to process sale', 'error');
+        return;
+      }
+
+      showToast('Ticket sold successfully.', 'success');
+      saleForm.reset();
+      patronNameText.textContent = '';
+      patronIdInput.value = '';
+      closeModal();
+      await loadDashboard();
+      await populateSeatOptions();
+    });
+
+    await populatePerformanceOptions();
+    await populateSeatOptions();
+    await loadDashboard();
+  });
+</script>
+</body></html>

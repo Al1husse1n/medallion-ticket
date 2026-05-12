@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed": "#0e1d29",
+            "tertiary-fixed-dim": "#ffb59b",
+            "secondary-container": "#f1f5f9", // Adjusted for white theme
+            "on-surface": "#1e293b", // Darker for contrast
+            "surface-container-highest": "#ffffff",
+            "primary-fixed": "#dae2ff",
+            "on-primary-fixed-variant": "#0040a2",
+            "surface-bright": "#ffffff",
+            "secondary-fixed-dim": "#b9c8d9",
+            "on-secondary": "#ffffff",
+            "primary-container": "#003d9b",
+            "tertiary-fixed": "#ffdbcf",
+            "on-primary-container": "#ffffff",
+            "on-error-container": "#93000a",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-high": "#ffffff",
+            "error-container": "#fee2e2",
+            "error": "#dc2626",
+            "surface": "#ffffff",
+            "secondary-fixed": "#f8fafc",
+            "on-secondary-fixed-variant": "#475569",
+            "surface-dim": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "inverse-surface": "#0f172a",
+            "surface-container-low": "#ffffff",
+            "surface-tint": "#003d9b",
+            "on-primary-fixed": "#001848",
+            "inverse-on-surface": "#f8fafc",
+            "surface-container": "#ffffff",
+            "tertiary": "#7b2600",
+            "on-tertiary-fixed-variant": "#812800",
+            "background": "#ffffff",
+            "outline": "#94a3b8", // Darker gray for borders
+            "primary": "#003d9b",
+            "on-error": "#ffffff",
+            "primary-fixed-dim": "#b2c5ff",
+            "inverse-primary": "#b2c5ff",
+            "secondary": "#475569",
+            "on-primary": "#ffffff",
+            "on-tertiary-container": "#ffc6b2",
+            "on-tertiary-fixed": "#380d00",
+            "outline-variant": "#e2e8f0", // Subtle border for white background
+            "on-background": "#0f172a",
+            "on-surface-variant": "#64748b",
+            "tertiary-container": "#a33500",
+            "surface-variant": "#ffffff",
+            "on-secondary-container": "#475569"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "xl": "32px",
+            "gutter": "16px",
+            "margin-desktop": "32px",
+            "xs": "4px",
+            "margin-mobile": "16px",
+            "sm": "12px",
+            "base": "8px",
+            "lg": "24px",
+            "md": "16px"
+          },
+          "fontFamily": {
+            "label-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "body-sm": ["Inter"],
+            "code": ["monospace"],
+            "body-lg": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "headline-lg": ["Inter"]
+          },
+          "fontSize": {
+            "label-md": ["14px", {"lineHeight": "16px", "letterSpacing": "0.01em", "fontWeight": "600"}],
+            "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+            "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "code": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+            "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+            "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+            "headline-sm": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+            "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 left-0 bg-white h-16 px-margin-mobile flex justify-between items-center border-b border-outline-variant z-30">
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-headline-sm text-headline-sm text-on-surface">Medallion Theater</h1>
+</div>
+<div class="flex items-center gap-4">
+<a href="login.html" class="text-error font-label-md hover:underline">Logout</a>
+<div class="w-8 h-8 rounded-full bg-slate-100 overflow-hidden border border-outline-variant">
+<img alt="User profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkHRoaHb394kYJ5gLhIau0bX9X0rvJVRGHJGsQ1An91GtI6UmqCDV8f74Kol9eMGab7jiPJhvrqNC-buPo3IEthbZXZuwH1gHBcCYzUeL7z9D-CV8BEboTNUOmkWfegaHU_nwN9PHb9vBimyojnvKKbI3MeLEgK8uCdfNeoTUfYDv1i0X_sE4CvJTJ9NhDsPyycxZ6Qrn-b5rmtnAR4f9Yszu2ALF0W7_mXUSQVpg87Li_55lbefpiTJ845sSyA6Q_A_2qhxaANHc"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-20 pb-24 px-margin-mobile max-w-3xl mx-auto">
+<header class="mb-lg">
+<h2 class="font-headline-lg text-headline-lg text-on-background">Production Management</h2>
+<p class="text-body-md text-on-surface-variant mt-xs">Simplified administrative list and entry system.</p>
+</header>
+<!-- CRUD List Section -->
+<section class="space-y-md">
+<div class="flex items-center justify-between mb-sm">
+<h3 class="font-label-md text-secondary uppercase tracking-wider">Current Productions</h3>
+<span id="production-count" class="text-label-sm px-2 py-0.5 bg-slate-100 text-on-secondary-container rounded-full border border-outline-variant">Loading...</span>
+</div>
+<div class="divide-y divide-outline-variant bg-white border border-outline-variant rounded-xl overflow-hidden shadow-sm" id="production-list">
+  <div class="p-md text-on-surface-variant">Loading productions...</div>
+</div>
+</section>
+<!-- CRUD Add Form Section -->
+<section class="mt-xl">
+<div class="bg-white p-md md:p-lg rounded-xl border border-outline-variant shadow-sm">
+<h3 class="font-headline-sm text-on-surface mb-md">Add New Production</h3>
+<form id="add-production-form" class="space-y-md">
+<div>
+<label class="block text-label-md text-on-surface-variant mb-1">Production Title</label>
+<input id="production-name" class="w-full bg-white border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="Enter title..." type="text" required />
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div>
+<label class="block text-label-md text-on-surface-variant mb-1">Genre</label>
+<select id="production-type" class="w-full bg-white border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" required>
+<option value="Classic Tragedy">Classic Tragedy</option>
+<option value="Musical Theater">Musical Theater</option>
+<option value="Contemporary Dance">Contemporary Dance</option>
+<option value="Opera">Opera</option>
+<option value="Experimental">Experimental</option>
+</select>
+</div>
+<div>
+<label class="block text-label-md text-on-surface-variant mb-1">Status</label>
+<select id="production-status" class="w-full bg-white border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all">
+<option>Active</option>
+<option>Rehearsal</option>
+<option>Hiatus</option>
+<option>Closed</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+<div>
+<label class="block text-label-md text-on-surface-variant mb-1">Opening Date</label>
+<input id="production-opening" class="w-full bg-white border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="date" />
+</div>
+<div>
+<label class="block text-label-md text-on-surface-variant mb-1">Closing Date</label>
+<input id="production-closing" class="w-full bg-white border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" type="date" />
+</div>
+</div>
+<div>
+<label class="block text-label-md text-on-surface-variant mb-1">Production Summary</label>
+<textarea id="production-summary" class="w-full bg-white border border-outline-variant rounded-lg p-3 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none" placeholder="Enter a brief summary..." rows="3"></textarea>
+</div>
+<div class="pt-sm">
+<button class="w-full bg-primary text-on-primary font-label-md py-3.5 rounded-lg hover:bg-primary/90 transition-all active:scale-[0.99] flex items-center justify-center gap-2" type="submit">
+<span class="material-symbols-outlined text-[20px]">add</span>
+              Create Production
+            </button>
+</div>
+</form>
+</div>
+</section>
+</main>
+<!-- Mobile Navigation -->
+<nav class="md:hidden fixed bottom-0 w-full bg-white border-t border-outline-variant h-16 flex justify-around items-center px-4 z-50">
+<a data-role="manager" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="manager.html">
+<span class="material-symbols-outlined">home</span>
+<span class="text-[10px] font-medium">Manager</span>
+</a>
+<a data-role="clerk" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="clerk.html">
+<span class="material-symbols-outlined">event_seat</span>
+<span class="text-[10px] font-medium">Clerk</span>
+</a>
+<a data-role="manager,clerk" class="flex flex-col items-center justify-center text-primary" href="production_management.html">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">theater_comedy</span>
+<span class="text-[10px] font-medium">Shows</span>
+</a>
+<a data-role="manager,clerk" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="seats.html">
+<span class="material-symbols-outlined">event_seat</span>
+<span class="text-[10px] font-medium">Seats</span>
+</a>
+<a data-role="manager,clerk" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="tickets.html">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="text-[10px] font-medium">Tickets</span>
+</a>
+<a data-role="clerk" class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors" href="patron_management.html">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[10px] font-medium">Patrons</span>
+</a>
+</nav>
+<script src="./auth.js"></script>
+<script src="./production-service.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!authService.requireAuthorization(['manager', 'clerk'])) {
+      return;
+    }
+    hideUnauthorizedLinks();
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (!authService.isAuthenticated()) {
+      authService.logout();
+      return;
+    }
+
+    const productionCount = document.getElementById('production-count');
+    const productionList = document.getElementById('production-list');
+    const addForm = document.getElementById('add-production-form');
+    const nameInput = document.getElementById('production-name');
+    const typeInput = document.getElementById('production-type');
+
+    const renderProductions = (productions) => {
+      if (!productions?.length) {
+        productionList.innerHTML = '<div class="p-md text-on-surface-variant">No productions available.</div>';
+        productionCount.textContent = '0 Shows';
+        return;
+      }
+      productionCount.textContent = `${productions.length} Shows`;
+      productionList.innerHTML = productions.map((production) => `
+        <div class="p-md flex items-center justify-between hover:bg-slate-50 transition-colors">
+          <div class="flex-grow">
+            <div class="flex items-center gap-2">
+              <h4 class="font-headline-sm text-on-surface">${production.name}</h4>
+              <span class="text-[10px] font-bold px-1.5 py-0.5 bg-slate-100 text-slate-700 rounded uppercase">${production.type}</span>
+            </div>
+            <p class="text-body-sm text-on-surface-variant">ID ${production.id}</p>
+          </div>
+          <div class="flex items-center gap-1">
+            <button type="button" data-edit-id="${production.id}" class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+              <span class="material-symbols-outlined text-[20px]">edit</span>
+            </button>
+            <button type="button" data-delete-id="${production.id}" class="p-2 text-on-surface-variant hover:text-error transition-colors">
+              <span class="material-symbols-outlined text-[20px]">delete</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    };
+
+    const loadProductions = async () => {
+      const result = await productionService.getProductions();
+      if (!result.success) {
+        showToast(result.error || 'Unable to load productions', 'error');
+        return;
+      }
+      renderProductions(result.data || []);
+    };
+
+    productionList.addEventListener('click', async (event) => {
+      const deleteButton = event.target.closest('[data-delete-id]');
+      const editButton = event.target.closest('[data-edit-id]');
+      if (deleteButton) {
+        const id = deleteButton.dataset.deleteId;
+        if (!confirm('Delete this production?')) {
+          return;
+        }
+        const result = await productionService.deleteProduction(id);
+        if (!result.success) {
+          showToast(result.error || 'Unable to delete production', 'error');
+          return;
+        }
+        showToast('Production deleted successfully.', 'success');
+        await loadProductions();
+      }
+      if (editButton) {
+        showToast('Edit is not available yet. Backend update endpoint required.', 'info');
+      }
+    });
+
+    addForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const name = nameInput.value.trim();
+      const type = typeInput.value.trim();
+      if (!name || !type) {
+        showToast('Title and genre are required.', 'error');
+        return;
+      }
+      const result = await productionService.registerProduction({ name, type });
+      if (!result.success) {
+        showToast(result.error || 'Unable to create production', 'error');
+        return;
+      }
+      showToast('Production created successfully.', 'success');
+      addForm.reset();
+      await loadProductions();
+    });
+
+    await loadProductions();
+  });
+</script>
+</body></html>
