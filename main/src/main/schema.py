@@ -27,7 +27,6 @@ class EmployeeResponse(EmployeeRegisterResponse):
 
 
 class PatronBase(BaseModel):
-    id: int
     first_name: str = Field(min_length=1, max_length=50)
     last_name: str = Field(min_length=1, max_length=50)
     phone: str = Field(min_length=1, max_length=100)
@@ -38,18 +37,29 @@ class PatronCreate(PatronBase):
     pass
 
 class PatronCreateResponse(PatronBase):
+    id: int
     created_at: datetime
 
 class PatronResponse(PatronCreateResponse):
     is_deleted: bool
-    tickets: list[TicketResponse] = []
+    tickets: list[TicketResponse] = []           
 
 class TicketBase(BaseModel):
     pass
-class TicketResponse(TicketBase):
+class TicketResponse(TicketBase):       
     pass
 
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class CursorParams(BaseModel):
+    cursor: Optional[int] = None
+    limit: int = 5
+
+class PaginatedResponse(BaseModel):
+    items: list[PatronResponse]
+    next_cursor: Optional[int]
+    has_next: bool
+    limit: int
 
