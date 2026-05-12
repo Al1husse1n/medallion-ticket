@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, List
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,23 +11,15 @@ from auth import CurrentEmployee
 
 router = APIRouter()
 
-@router.post(
-    "/register",
-    response_model=ProductionCreateResponse,
-    status_code=status.HTTP_201_CREATED
-)
-async def register_production(production:ProductionCreate, current_employee:CurrentEmployee, db: Annotated[AsyncSession, Depends(get_db)]):
-    result = await db.execute(
-        select(models.Employee)
-        .where(func.lower(models.Employee.email) == current_employee.email.lower())
-    )
-    employee = result.scalars().first()
 
-    if not employee or employee.role !=  "clerk":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You are not authorized to register a production"
-        )
+@router.post("/register", response_model=ProductionCreateResponse, status_code=201)
+async def register_production(
+    production: ProductionCreate,
+    current_employee: CurrentEmployee,
+    db: Annotated[AsyncSession, Depends(get_db)]
+):
+    if current_employee.role not in [models.Role.CLERK, models.Role.MANAGER]:
+        raise HTTPException(403, "Not authorized to register a production")
     
     new_production = models.Production(**production.model_dump())
     db.add(new_production)
@@ -35,23 +27,16 @@ async def register_production(production:ProductionCreate, current_employee:Curr
     await db.refresh(new_production)
     return new_production
 
-@router.get(
-    "/",
-    response_model=list[ProductionResponse]
-)
-async def get_productions(current_employee:CurrentEmployee, db: Annotated[AsyncSession, Depends(get_db)]):
-    result = await db.execute(
-        select(models.Employee)
-        .where(func.lower(models.Employee.email) == current_employee.email.lower())
-    )
-    employee = result.scalars().first()
 
-    if not employee or employee.role !=  "clerk":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You are not authorized to view production list"
-        )
+@router.get("/", response_model=List[ProductionResponse])
+async def get_all_productions(
+    current_employee: CurrentEmployee,
+    db: Annotated[AsyncSession, Depends(get_db)]
+):
+    if current_employee.role not in [models.Role.CLERK, models.Role.MANAGER]:
+        raise HTTPException(403, "Not authorized to view production list")
     
+    # ✅ Simpler eager loading - just load performances (no circular references)
     result = await db.execute(
         select(models.Production)
         .options(selectinload(models.Production.performances))
@@ -59,27 +44,17 @@ async def get_productions(current_employee:CurrentEmployee, db: Annotated[AsyncS
     )
 
     productions = result.scalars().all()
-
     return productions
 
 
-
-@router.delete(
-    "/{production_id}",
-    response_model=ProductionResponse
-)
-async def delete_production(production_id:int, current_employee:CurrentEmployee, db: Annotated[AsyncSession, Depends(get_db)]):
-    result = await db.execute(
-        select(models.Employee)
-        .where(func.lower(models.Employee.email) == current_employee.email.lower())
-    )
-    employee = result.scalars().first()
-
-    if not employee or employee.role !=  "manager":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You are not authorized to delete a production"
-        )
+@router.delete("/{production_id}", response_model=ProductionResponse)
+async def delete_production(
+    production_id: int,
+    current_employee: CurrentEmployee,
+    db: Annotated[AsyncSession, Depends(get_db)]
+):
+    if current_employee.role != models.Role.MANAGER:
+        raise HTTPException(403, "Only managers can delete a production")
     
     result = await db.execute(
         select(models.Production)
@@ -90,10 +65,7 @@ async def delete_production(production_id:int, current_employee:CurrentEmployee,
     production = result.scalars().first()
 
     if not production:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="there is no production with this ID"
-        )
+        raise HTTPException(404, f"There is no production with ID {production_id}")
 
     await db.delete(production)
     await db.commit()
@@ -101,22 +73,14 @@ async def delete_production(production_id:int, current_employee:CurrentEmployee,
     return production
 
 
-@router.get(
-    "/{production_name}",
-    response_model=list[ProductionResponse]
-)
-async def search_production(production_name:str, current_employee:CurrentEmployee, db: Annotated[AsyncSession, Depends(get_db)]):
-    result = await db.execute(
-        select(models.Employee)
-        .where(func.lower(models.Employee.email) == current_employee.email.lower())
-    )
-    employee = result.scalars().first()
-
-    if not employee or employee.role !=  "clerk":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You are not authorized to search up production"
-        )
+@router.get("/{production_name}", response_model=List[ProductionResponse])
+async def search_production(
+    production_name: str,
+    current_employee: CurrentEmployee,
+    db: Annotated[AsyncSession, Depends(get_db)]
+):
+    if current_employee.role not in [models.Role.CLERK, models.Role.MANAGER]:
+        raise HTTPException(403, "Not authorized to search for productions")
     
     result = await db.execute(
         select(models.Production)
@@ -124,11 +88,9 @@ async def search_production(production_name:str, current_employee:CurrentEmploye
         .options(selectinload(models.Production.performances))
     )
 
-    production = result.scalars().all()
-    if not production:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="There is no production with that name"
-        )
+    productions = result.scalars().all()
     
-    return production
+    if not productions:
+        raise HTTPException(404, f"There is no production with name '{production_name}'")
+    
+    return productions

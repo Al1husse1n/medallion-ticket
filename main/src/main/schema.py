@@ -21,6 +21,7 @@ class PatronBriefResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 class EmployeeBriefResponse(BaseModel):
     """Employee without tickets_sold (breaks circular reference)"""
     id: int
@@ -31,6 +32,7 @@ class EmployeeBriefResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 class ProductionBriefResponse(BaseModel):
     """Production without performances (breaks circular reference)"""
     id: int
@@ -40,15 +42,15 @@ class ProductionBriefResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
 class PerformanceBriefResponse(BaseModel):
-    """Performance without tickets (breaks circular reference)"""
+    """Performance without production and without tickets (breaks circular reference)"""
     id: int
     performance_datetime: datetime
-    production_id: int
-    production: Optional[ProductionBriefResponse] = None
     
     class Config:
         from_attributes = True
+
 
 class SeatBriefResponse(BaseModel):
     """Seat without ticket (simple)"""
@@ -61,7 +63,7 @@ class SeatBriefResponse(BaseModel):
         from_attributes = True
 
 
-# ==================== FULL RESPONSE MODELS (WITH RELATIONSHIPS) ====================
+# ==================== EMPLOYEE SCHEMAS ====================
 
 class EmployeeBase(BaseModel):
     role: Role
@@ -69,16 +71,21 @@ class EmployeeBase(BaseModel):
     email: EmailStr = Field(max_length=100)
     joined_at: Optional[datetime] = None
 
+
 class EmployeeCreate(EmployeeBase):
     password: str = Field(min_length=8)
+
 
 class EmployeeRegisterResponse(EmployeeBase):
     model_config = ConfigDict(from_attributes=True)
     id: int 
 
+
 class EmployeeResponse(EmployeeRegisterResponse):
     tickets_sold: List["TicketResponse"] = []
 
+
+# ==================== PATRON SCHEMAS ====================
 
 class PatronBase(BaseModel):
     first_name: str = Field(min_length=1, max_length=50)
@@ -87,52 +94,68 @@ class PatronBase(BaseModel):
     address: str = Field(min_length=1, max_length=100)
     email: EmailStr = Field(max_length=100)
 
+
 class PatronCreate(PatronBase):
     pass
+
 
 class PatronCreateResponse(PatronBase):
     id: int
     created_at: datetime
     model_config = ConfigDict(from_attributes=True)
 
+
 class PatronResponse(PatronCreateResponse):
     is_deleted: bool
     tickets: List["TicketResponse"] = []
 
 
+# ==================== PRODUCTION SCHEMAS ====================
+
 class ProductionBase(BaseModel):
     name: str = Field(min_length=1, max_length=50)
     type: str = Field(min_length=1, max_length=50)
 
+
 class ProductionCreate(ProductionBase):
     pass
+
 
 class ProductionCreateResponse(ProductionBase):
     id: int
     model_config = ConfigDict(from_attributes=True)
 
-class ProductionResponse(ProductionCreateResponse):
-    performances: List["PerformanceResponse"] = []
 
+class ProductionResponse(ProductionCreateResponse):
+    performances: List[PerformanceBriefResponse] = []  # ✅ Brief version (no circular ref)
+
+
+# ==================== PERFORMANCE SCHEMAS ====================
 
 class PerformanceBase(BaseModel):
     performance_datetime: datetime = Field(description="Date and time of the performance")
 
+
 class PerformanceCreate(PerformanceBase):
     production_id: int
 
+
 class PerformanceCreateResponse(PerformanceBase):
-    production: ProductionResponse
+    production: ProductionBriefResponse  # ✅ Brief version
     model_config = ConfigDict(from_attributes=True)
 
-class PerformanceResponse(PerformanceCreateResponse):
-    tickets: List["TicketResponse"] = []
 
+class PerformanceResponse(PerformanceCreateResponse):
+    tickets: List["TicketResponse"] = []  # Full tickets for detail view
+
+
+# ==================== SEAT SCHEMAS ====================
 
 class SeatBase(BaseModel):
     seat_row: str
     seat_number: int
     category: str
+
 
 class SeatResponse(SeatBase):
     id: int
@@ -140,6 +163,7 @@ class SeatResponse(SeatBase):
     
     class Config:
         from_attributes = True
+
 
 class SeatBulkCreateResponse(BaseModel):
     message: str
@@ -157,8 +181,10 @@ class TicketBase(BaseModel):
     performance_id: int
     seat_id: int
 
+
 class TicketCreate(TicketBase):
     pass
+
 
 class TicketCreateResponse(TicketBase):
     id: int
@@ -169,7 +195,7 @@ class TicketCreateResponse(TicketBase):
     class Config:
         from_attributes = True
 
-# ✅ FIXED: Use BriefResponse models to avoid circular references
+
 class TicketResponse(BaseModel):
     id: int
     price: Decimal
@@ -179,23 +205,28 @@ class TicketResponse(BaseModel):
     seat_id: int
     clerk_id: int
     created_at: datetime
-    buyer: Optional[PatronBriefResponse] = None
-    performance: Optional[PerformanceBriefResponse] = None
-    seat: Optional[SeatBriefResponse] = None
-    seller: Optional[EmployeeBriefResponse] = None
+    buyer: Optional[PatronBriefResponse] = None      # ✅ Brief version (no tickets)
+    performance: Optional[PerformanceBriefResponse] = None  # ✅ Brief version (no circular ref)
+    seat: Optional[SeatBriefResponse] = None          # ✅ Brief version
+    seller: Optional[EmployeeBriefResponse] = None    # ✅ Brief version (no tickets_sold)
     
     class Config:
         from_attributes = True
 
+
+# ==================== AUTH SCHEMAS ====================
 
 class Token(BaseModel):
     access_token: str
     token_type: str
 
 
+# ==================== PAGINATION SCHEMAS ====================
+
 class CursorParams(BaseModel):
     cursor: Optional[int] = None
     limit: int = 5
+
 
 class PaginatedResponse(BaseModel):
     items: List[PatronResponse]
